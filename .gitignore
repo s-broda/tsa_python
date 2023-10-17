@@ -302,7 +302,7 @@ TSWLatexianTemp*
 
 *.evsettings
 exams/
-book/
+book/brooks_2019_selected_problems.pdf
 eviews_instructions/
 #*.pdf
 #*.wf1
