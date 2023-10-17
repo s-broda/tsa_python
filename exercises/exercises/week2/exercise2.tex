@@ -1,0 +1,52 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{amsmath, amsfonts, dsfont, booktabs, graphicx, natbib, a4wide, times, microtype, hyperref}
+\newcommand{\E}{\ensuremath{{\mathbb E}}} % expected value
+\def\func#1{\mathop{\rm #1}}
+\begin{document}
+\title{Exercise 2}
+\author{Simon A.\ Broda}
+\date{}
+\maketitle
+
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item Open the file \texttt{simulations.xlsx}. The sheet ``White Noise'' simulates $T=1000$ observations from a (Gaussian) white noise process; i.e., 1000 uncorrelated mean-zero normals. By repeatedly pressing \texttt{F9}, you can draw new random numbers. Describe your observations.
+\item Similarly, the sheet ``Random Walk'' simulates $T=1000$ observations from a (Gaussian) random walk. Describe your observations.
+\end{enumerate}
+\item
+\begin{enumerate}
+\item Open the file \texttt{sp500.csv}. Add a column to the resulting dataframe with the name \texttt{log\textunderscore price} containing the log prices, and a column \texttt{log\textunderscore return} containing the continuously compounded returns. Make a time series plot for each, and a histogram of the returns. Describe your findings.
+\item Compute the skewness and kurtosis of the returns and manually conduct a Jarque-Bera test. Then, use \texttt{statsmodels} to do the test.
+\item Generate a correlogram (ACF and PACF) of the returns and interpret it. 
+\item Test whether the first 10 autocorrelations are jointly significant at the 5\% level.
+\item Generate a correlogram of the log prices and interpret it.
+\end{enumerate}
+\textbf{Hint}: Here are some useful functions. 
+\begin{verbatim}
+	plt.hist
+	sm.stats.stattools.robust_skewness
+	sm.stats.stattools.robust_kurtosis
+	sm.stats.stattools.jarque_bera
+	scipy.stats.chi2.ppf
+	sm.graphics.tsa.plot_acf
+	sm.graphics.tsa.plot_pacf
+	tsa.acf
+	sm.stats.diagnostic.acorr_ljungbox
+\end{verbatim}
+\item
+\begin{enumerate}
+\item Show that for the random walk $Y_t=Y_{t-1}+U_t$, where $U_t$ is white noise and $Y_0$ some constant,
+
+\[
+Y_t=Y_0+U_1+U_2+\cdots+U_t=Y_0+\sum_{s=1}^t U_t.
+\]
+\item Building on the result from the previous question, show that
+\begin{align*}
+\E[Y_t]&=Y_0,\quad\mbox{and} \\
+\mathrm{var}(Y_t)&=\sigma ^2t.
+\end{align*}
+
+\end{enumerate}
+\end{enumerate}
+\end{document} 

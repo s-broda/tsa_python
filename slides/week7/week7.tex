@@ -1,0 +1,912 @@
+\input{../preamble.tex}
+\institute{{\Large Cointegration}}
+\begin{document}
+\frame{\titlepage}
+\input{../weeks.tex}
+
+
+
+\section{Cointegration and Common Trends}\subsection*{}
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{Cointegration and Common Trends}
+
+Suppose we have two time series $Y_{t}$ and $X_{t}$, which are both $I(1)$,
+and we analyze a regression model of the form%
+\begin{equation*}
+Y_{t}=\beta _{1}+\beta _{2}X_{t}+U_{t}.
+\end{equation*}%
+Here $U_{t}$ has mean zero but may display autocorrelation. Two cases:
+
+\begin{itemize}
+\item $U_{t}\sim I(1)$: if $U_{t}$ displays no mean-reversion, then $Y_{t}$
+does not revert to the explained part $\beta_1 +\beta_2 X_{t}$. Even if $%
+\beta_2 =0$, its $t$-statistic and $R^{2}$ will often seem significant (%
+\emph{\color{red}spurious regressions}). To avoid this, one should estimate
+a model in differences, i.e., $\Delta Y_{t}=a_1 + a_2 \Delta X_{t}+\Delta
+U_{t}$.
+
+\item $U_{t}\sim I(0)$: now $Y_{t}$ and $X_{t}$ have a \er{common}
+stochastic trend, such that the linear combination $Y_{t}-\beta_2 X_{t}$
+does not have a trend. This is called \emph{\color{red}cointegration}.
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+\begin{frame}%
+\frametitle{Example}
+\begin{itemize}
+\item Consider the model
+\begin{align*}
+Y_t&=\beta_1 +\beta_2 X_t+U_{1,t}\\
+X_t&=X_{t-1}+U_{2,t}
+\end{align*}
+where $\beta_2\neq0$, $U_{1,t},U_{2,t}\stackrel{\mathrm{iid}}{\sim}(0,\sigma^2)$ independently of each other.
+\item $X_t$ is a random walk and thus nonstationary. $Y_t$ contains $X_t$ and is thus also nonstationary. But
+\[
+Y_t-\beta_2 X_t=\beta_1 +U_{1,t}
+\]
+is stationary: the RHS is white noise plus a constant.
+\item $(1, -\beta_2)$ is called the \er{cointegrating vector}.
+\end{itemize}
+\end{frame}%
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{Cointegration and Common Trends, contd.}
+
+\begin{itemize}
+\item The concept is easily extended to more than two series: if $%
+X_{2t},\ldots ,X_{kt}$ are all $I(1)$ variables, and
+\begin{equation*}
+Y_{t}=\beta _{1}+\beta _{2}X_{2t}+\ldots +\beta _{k}X_{kt}+U_{t},
+\end{equation*}%
+then this is a spurious regression if $U_{t}\sim I(1)$ (and $\beta _{i}=0$),
+and a cointegrating relation if $U_{t}$ is stationary.
+\item In other words, cointegration between $k$ integrated series means that there exists a \er{linear combination}\footnote{i.e., a weighted sum} of them which is stationary.
+\item Examples of possibly cointegrated time series:
+
+\begin{itemize}
+\item exchange rates and relative prices (\emph{\color{red}purchasing power
+parity});
+
+\item spot and futures prices of assets or exchange rates;
+
+\item short- and long-term interest rates (\emph{\color{red}term structure
+models});
+
+\item stock prices and dividends (\emph{\color{red}present value relations}).
+\end{itemize}
+
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+
+
+
+\section[ECM and Engle-Granger]{Error Correction Models and the Engle-Granger Procedure}\subsection*{}
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{Testing for Cointegration}
+\begin{itemize}
+\item For cointegrated series, one should exploit the long-run equilibrium relationship between variables for estimation rather than differencing. Differencing would \er{remove} that structure.
+\item Engle and Granger proposed the following procedure:
+
+\begin{itemize}
+\item Conduct individual unit root tests to ensure all series are $I(1)$.
+\item Estimate the regression model%
+\begin{equation*}
+Y_{t}=\beta _{1}+\beta _{2}X_{2t}+\ldots +\beta _{k}X_{kt}+U_{t}
+\end{equation*}%
+by ordinary least-squares. Estimates are (super)consistent, but standard errors are wrong because series are $I(1)$.
+
+\item Apply an ADF unit root test (with constant) to the residuals $\hat{u}_{t}$ from this
+regression. This yields a test for $H_{0}:U_{t}\sim I(1)$ (spurious
+regression) against $H_{1}:U_{t}\sim I(0)$ (cointegration). The critical
+values depend on $k$. E.g., for $k=2$ ($X_{2t}$ and an intercept),
+the 5\% c.v.\ is -3.41.
+
+\item If $H_{0}$ is rejected, estimate an \emph{\color{red}error correction
+model}.
+\end{itemize}
+\end{itemize}
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+\begin{frame}
+\begin{block}{Engle-Granger critical values}
+\begin{tabular}{l|rrrrr}
+\toprule
+Number of series (w/o constant)&2&3&4&5&6\\
+Critical value &-3.41 &-3.80 &-4.16&-4.49&-4.74\\
+\bottomrule
+\end{tabular}
+\end{block}
+\end{frame}
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{Error Correction Models}
+
+\begin{itemize}
+\item Cointegration between $Y_{t}$ and $X_{t}$ implies that deviations $%
+(Y_{t-1}-\beta _{1}-\beta _{2}X_{t-1})$ from the equilibrium level should be
+(partially) corrected in the next period, by $Y_{t}$, $X_{t}$, or both.
+
+\item This leads to a \emph{\color{red}vector error correction model}
+(VECM), which in the simplest form is%
+\begin{eqnarray*}
+\Delta Y_{t} &=&c_1+\alpha _{1}(Y_{t-1}-\beta _{1}-\beta _{2}X_{t-1})+e_{1t}, \\
+\Delta X_{t} &=&c_2+\alpha _{2}(Y_{t-1}-\beta _{1}-\beta _{2}X_{t-1})+e_{2t},
+\end{eqnarray*}%
+where $e_{1t}$ and $e_{2t}$ are two white noise errors (possibly
+correlated), and where we expect $\alpha _{1}<0$ and/or $\alpha _{2}\beta
+_{2}>0$.
+\item We might need to add lags of $\Delta Y_{t}$ and/or $\Delta X_{t}$ on RHS to combat autocorrelation.
+\item The \emph{\color{red}Granger representation theorem} states that
+cointegration implies an error correction model (possibly with more lags),
+and vice versa; see exercises.
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{Engle-Granger Procedure}
+\begin{itemize}
+\item
+The VECM
+\begin{eqnarray*}
+\Delta Y_{t} &=&c_1+\alpha _{1}(Y_{t-1}-\beta _{1}-\beta _{2}X_{t-1})+e_{1t}, \\
+\Delta X_{t} &=&c_2+\alpha _{2}(Y_{t-1}-\beta _{1}-\beta _{2}X_{t-1})+e_{2t}.
+\end{eqnarray*}
+is estimated by replacing $Y_{t-1}-\beta _{1}-\beta _{2}X_{t-1}$
+by OLS residual $\hat{u}_{t-1}=Y_{t-1}-\hat{\beta}_{1}-\hat{\beta}%
+_{2}X_{t-1} $, and estimating $\alpha _{1}$ and $\alpha _{2}$ by OLS.
+\item Note that $\hat{u}$ is stationary, so this is a valid regression!
+\item If $\alpha _{2}=0$, then all correction is done by $Y_{t}$, and not by
+$X_{t}$. In that case it makes sense to treat $X_{t}$ as exogenous and $%
+Y_{t} $ as endogenous, and consider the \textquotedblleft
+single-equation\textquotedblright\ error correction model%
+\begin{equation*}
+\Delta Y_{t}=c+\alpha_1 (Y_{t-1}-\beta _{1}-\beta _{2}X_{t-1}) +e_{t}.
+\end{equation*}%
+
+\item In general, both $Y_{t}$ and $X_{t}$ are endogenous.
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+\section*{Example}
+\begin{frame}\frametitle{Example}
+\begin{itemize}
+\item Until 1971, as part of the Bretton-Woods system of fixed exchange rates, the US dollar was convertible to gold, i.e., it was possible for foreign central banks to redeem US dollars for gold at a fixed rate of 35\$ per troy ounce, so that the price of gold was fixed.
+\item In 1971, US president Nixon unilaterally cancelled the direct convertibility, ultimately ending the Bretton-Woods agreement.
+\item Gold became a floating asset, and its price increased sharply; in other words, the US\$ was massively devalued.
+\end{itemize}
+\end{frame}
+\begin{frame}\frametitle{Example continued}
+\begin{itemize}
+\item We want to analyze the hypothesis that the increasing price (in US\$) of oil is not a consequence of an increased demand for (or a reduced supply of) oil, but rather of a continued devaluation of the US\$.
+
+\item We have at our disposal monthly data from April 1968 to January 2017 (586 observations) on the following variables:
+
+\begin{itemize}
+\item $\mathrm{gold}_t$, the spot price of one troy ounce of gold in US\$;
+
+\item $\mathrm{oil}_t$, the spot price of one barrel of WTI crude oil in US\$.
+\end{itemize}
+\item Idea: if the relative price of oil expressed in units of gold $\mathrm{oil}_t/\mathrm{gold}_t$ is stationary, then this implies that $\log(\mathrm{oil}_t)-\log(\mathrm{gold}_t)$ is stationary, so that $\log(\mathrm{oil}_t)$ and $\log(\mathrm{gold}_t)$ must be cointegrated if the individual series are integrated.
+\end{itemize}
+\end{frame}
+\begin{frame}
+\begin{block}{$\log(\mathrm{gold}_t)$ and $\log(\mathrm{oil}_t)$}
+\begin{center}\includegraphics[height=5cm]{oilgold2017}\end{center}
+\end{block}
+\end{frame}
+\begin{frame}\frametitle{Example continued}
+\begin{itemize}
+\item[Step 1] Test that the variables are integrated (ADF test with constant and trend)
+\begin{center}
+\includegraphics[width=0.9\textwidth]{oilgold_adf}
+\end{center}
+Neither test rejects, so the series are I(1).
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]\frametitle{Example continued}
+\begin{itemize}
+\item[Step 2] Estimate long-run relationship
+$\textrm{loil}_t = \beta_1+\beta_2\textrm{lgold}_t+U_t$
+\begin{block}{Estimated long run relationship}
+\tiny
+\begin{verbatim}
+                                                     OLS Regression Results                            
+                         ==============================================================================
+                         Dep. Variable:                   LOIL   R-squared:                       0.873
+                         Model:                            OLS   Adj. R-squared:                  0.873
+                         Method:                 Least Squares   F-statistic:                     4015.
+                         Date:                Wed, 11 Oct 2023   Prob (F-statistic):          6.99e-264
+                         Time:                        15:03:24   Log-Likelihood:                -183.59
+                         No. Observations:                 586   AIC:                             371.2
+                         Df Residuals:                     584   BIC:                             379.9
+                         Df Model:                           1                                         
+                         Covariance Type:            nonrobust                                         
+                         ==============================================================================
+                                          coef    std err          t      P>|t|      [0.025      0.975]
+                         ------------------------------------------------------------------------------
+                         Intercept     -2.2590      0.086    -26.167      0.000      -2.429      -2.089
+                         LGOLD          0.9262      0.015     63.364      0.000       0.898       0.955
+                         ==============================================================================
+                         Omnibus:                        4.994   Durbin-Watson:                   0.074
+                         Prob(Omnibus):                  0.082   Jarque-Bera (JB):                4.313
+                         Skew:                          -0.133   Prob(JB):                        0.116
+                         Kurtosis:                       2.675   Cond. No.                         38.3
+                         ==============================================================================
+\end{verbatim}
+\end{block}
+The cointegrating vector is $(1, -\beta_2) = (1, -0.926)$ (if the Engle-Granger test rejects). \\
+\er{Careful}: standard errors are wrong, because variables are $I(1)$.
+\end{itemize}
+\end{frame}
+\begin{frame}\frametitle{Example continued}
+\begin{block}{Residuals (=equilibrium error) $\hat{u}_t$}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{uhat}
+\end{center}
+\end{block}
+\end{frame}
+
+\begin{frame}\frametitle{Example continued}
+\begin{itemize}
+\item[Step 3] Apply ADF test (with intercept) to \texttt{u}.
+\begin{center}
+\includegraphics[width=0.9\textwidth]{englegranger}
+\end{center}
+\er{Careful}: we need to use the Engle-Granger 5\% critical value of $-3.41$, \textbf{not} the one given by \texttt{adfuller} (nor the $p$-value). Conclusion: test rejects the null of ``no cointegration''.
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]\frametitle{Example continued}
+\begin{itemize}
+\item[Step 4a] Estimate the VECM equation for \texttt{loil}. Note: I threw in a lag of the dependent variable, as there was autocorrelation without it (cf.\ selected lag length in ADF test).
+\begin{block}{VECM equation for \texttt{loil}}
+	\tiny
+\begin{verbatim}
+                                             OLS Regression Results                            
+                    ==========================================================================================
+                    Dep. Variable:         df.LOIL.diff()               R-squared:                       0.078
+                    Model:                            OLS               Adj. R-squared:                  0.074
+                    Method:                 Least Squares               F-statistic:                     24.46
+                    Date:                Wed, 11 Oct 2023               Prob (F-statistic):           6.31e-11
+                    Time:                        16:25:01               Log-Likelihood:                 654.56
+                    No. Observations:                 584               AIC:                            -1303.
+                    Df Residuals:                     581               BIC:                            -1290.
+                    Df Model:                           2                                         
+                    Covariance Type:            nonrobust                                         
+                    ==========================================================================================
+                                                 coef    std err          t      P>|t|      [0.025      0.975]
+                    ------------------------------------------------------------------------------------------
+                    Intercept                  0.0036      0.003      1.111      0.267      -0.003       0.010
+                    u.shift()                 -0.0350      0.010     -3.518      0.000      -0.054      -0.015
+                    df.LOIL.diff().shift()     0.2565      0.040      6.399      0.000       0.178       0.335
+                    ==========================================================================================
+                    Omnibus:                      325.732               Durbin-Watson:                   2.007
+                    Prob(Omnibus):                  0.000               Jarque-Bera (JB):            11453.205
+                    Skew:                           1.828               Prob(JB):                         0.00
+                    Kurtosis:                      24.385               Cond. No.                         12.3
+                    ==========================================================================================
+
+\end{verbatim}
+\end{block}
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]\frametitle{Example continued}
+\begin{itemize}
+\item[Step 4b] Estimate the VECM equation for \texttt{lgold}.
+\begin{block}{VECM equation for \texttt{lgold}}
+\tiny
+\begin{verbatim}
+                                                     OLS Regression Results                            
+                         ==============================================================================
+                         Dep. Variable:        df.LGOLD.diff()   R-squared:                       0.003
+                         Model:                            OLS   Adj. R-squared:                  0.001
+                         Method:                 Least Squares   F-statistic:                     1.616
+                         Date:                Wed, 11 Oct 2023   Prob (F-statistic):              0.204
+                         Time:                        16:29:45   Log-Likelihood:                 850.41
+                         No. Observations:                 585   AIC:                            -1697.
+                         Df Residuals:                     583   BIC:                            -1688.
+                         Df Model:                           1                                         
+                         Covariance Type:            nonrobust                                         
+                         ==============================================================================
+                                          coef    std err          t      P>|t|      [0.025      0.975]
+                         ------------------------------------------------------------------------------
+                         Intercept      0.0059      0.002      2.504      0.013       0.001       0.010
+                         u.shift()      0.0090      0.007      1.271      0.204      -0.005       0.023
+                         ==============================================================================
+                         Omnibus:                       69.639   Durbin-Watson:                   1.933
+                         Prob(Omnibus):                  0.000   Jarque-Bera (JB):              356.493
+                         Skew:                           0.368   Prob(JB):                     3.88e-78
+                         Kurtosis:                       6.753   Cond. No.                         3.02
+                         ==============================================================================
+\end{verbatim}
+\end{block}
+		The adjustment coefficient $\alpha_2$ in the equation for \texttt{d(lgold)} is insignificant ($p=0.204$). So all the adjustment is done by \texttt{loil} $\rightarrow$ single-equation ECM.
+	\end{itemize}
+\end{frame}
+\begin{frame}\frametitle{Example continued}
+\begin{itemize}
+\item The final model is the single-equation ECM
+\[
+\Delta \textrm{loil}_t=0.0036-0.035(\textrm{loil}_{t-1}-0.926\textrm{lgold}_{t-1}+2.26)+0.25\Delta\textrm{loil}_{t-1}+e_{1t}.
+\]
+In our earlier notation,
+\[
+\Delta Y_t=c+\alpha_1(Y_{t-1}-\beta_1-\beta_2X_{t-1})+\gamma\Delta Y_{t-1} +e_{1t},
+\]
+with $c=0.0036$, $\alpha_1=-0.035<0$ as desired, $\beta_1=-2.26$, $\beta_2=0.926$, and $\gamma=0.25$.
+\item Interpretation: there is an equilibrium relationship between \textrm{loil} and \textrm{lgold}. In case of a disequilibrium, \textrm{loil} adjusts towards the equilibrium. The adjustment amounts to 3.5\% per period.
+\end{itemize}
+\end{frame}
+
+%\section{VARs}\subsection*{bla}
+%\begin{frame}
+%\frametitle{A Bivariate VAR}
+%\begin{itemize}
+%\item The vector autoregressive model (VAR) is the natural generalisation of autoregressive models, popularized by 2011 Nobel laureate Sims.
+%\item Simplest case is a bivariate VAR without an intercept:
+%$$
+%\begin{array}{rcl}
+% Z_{1t} & = &  \phi_{11} Z_{1,t-1} + \phi_{12} Z_{2,t-1} + U_{1t} \\
+% Z_{2t} & = &  \phi_{21} Z_{1,t-1} + \phi_{21} Z_{2,t-1} + U_{2t}
+%\end{array}
+%$$
+%where $(U_{1t}, U_{2t})$ represents a bivariate white noise
+%disturbance term with $E(U_{it} = 0)$, $i=1,2$. \\
+%
+%\item We assume
+%$E(U_{1t}U_{2t}) = 0$ (no contemporaneous correlation across equations).
+%\item Note that there are no contemporaneous terms ($Z_{1t}$ does not depend on $Z_{2t}$). Hence all variables on the RHS are predetermined, and the system can be estimated by (equationwise) OLS.
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%\frametitle{The General VAR}
+%\begin{itemize}
+%\item In matrix form, the bivariate VAR becomes
+%$$
+% \left(\begin{array}{c}Z_{1t} \\ Z_{2t}\end{array} \right) =
+%% \left(\begin{array}{c}\phi_{10} \\ \phi_{20}\end{array} \right) +
+% \left(\begin{array}{cc}\phi_{11} & \phi_{12} \\ \phi_{21} & \phi_{22}\end{array} \right)
+% \left(\begin{array}{c}Z_{1,t-1} \\ Z_{2,t-1}\end{array} \right) +
+%  \left(\begin{array}{c}U_{1t} \\ U_{2t} \end{array} \right).
+%$$
+%
+%\item General case: VAR model for $n$ dependent variables. This model can be
+%written compactly as:
+%\[
+%\underset{n \times 1}{\mathbf{Z}_t} =  \underset{n \times n}{\boldsymbol{\Phi}}\;  \underset{n \times 1}{\mathbf{Z}_{t-1}} + \underset{n \times 1}{\mathbf{u}_t}
+%\]
+%
+%\item Extending the number of lags to $k$:
+%\[
+%\underset{n \times 1}{\mathbf{Z}_t} =  \underset{n \times n}{\boldsymbol{\Phi}_1}\;  \underset{n \times 1}{\mathbf{Z}_{t-1}} +\cdots+ \underset{n \times n}{\boldsymbol{\Phi}_k}\;  \underset{n \times 1}{\mathbf{Z}_{t-k}} \underset{n \times 1}{\mathbf{u}_t}
+%\]
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}
+%\frametitle{Advantages and Disadvantages of VAR Modelling}
+%\begin{itemize}
+%\item Advantages
+%\begin{enumerate}
+%\item No need to specify which variables are endogenous and exogenous (all variables are endogenous)
+%\item A variable may depend on more than just its own lags, or combinations
+%of white noise terms $\Rightarrow$ more general than ARMA modelling
+%\item If there are no contemporaneous error terms on the RHS of the equations,
+%one can simply use OLS separately on each equation
+%\item Forecasts are often better than those obtained by `traditional'
+%structural models
+%\end{enumerate}
+%\item Problems
+%\begin{enumerate}
+%\item A-theoretical (as are ARMA models)
+%\item How should the lag length be selected?
+%\item Many parameters! For $n$ variables and $k$ lags there are
+%$n + k\times n^2$ parameters to be estimated. E.g.\ for $n =3$, $k=3$, there
+%are $30$ parameters.
+%\item Should all components of the VAR be stationary?
+%\item How do we interpret the coefficients?
+%\end{enumerate}
+%\end{itemize}
+%\end{frame}
+%
+%
+
+
+
+%
+%\begin{frame}
+%
+%\frametitle{Choosing optimal lag length}
+%
+%Two possible approaches: \emph{\color{red}cross-equation restrictions} and \emph{\color{red}information criteria}
+%
+%Cross-equation restrictions:
+%\begin{itemize}
+%\item In the spirit of (unrestricted) VAR modelling, each equation should have the same lag length
+%\item Likelihood ratio test can be used for examining restrictions: E.g.\
+%a bivariate VAR($8$) estimated using quarterly data with $8$
+%lags of the two variables in each equation, restriction of interest:
+%coefficients on lags $5$ through $8$ are zero
+%\item Denote the variance-covariance matrix of the residuals (given by $\widehat u \widehat u'$) as $\widehat \Sigma$. The likelihood ratio test statistic for
+%this joint hypothesis is
+%$$
+% LR = T \left( \log \left| \widehat \Sigma_r\right| - \log \left| \widehat \Sigma_u\right| \right)
+%$$
+%where $\widehat \Sigma_{u,r}$ denotes the determinant
+%of the variance-covariance matrix of the residuals for the
+%unrestricted and the restricted model, respectively.
+%\item Under the null, the test statistic follows a $\chi^2$ distribution with
+%degrees of freedom equal to the total number of restrictions. In the above
+%example, the restrictions are four $2\times2$ matrices being zero $\Rightarrow$
+%$16$ restrictions.
+%\end{itemize}
+%\end{frame}
+%\begin{frame}\frametitle{Lag Length Selection}
+%\begin{itemize}
+%\item Different methods for lag length selection exist. One possibility is to use multivariate versions of information criteria.
+%\item The lag length should be the same for each equation.
+%\item Denote the estimated variance-covariance matrix of the errors as $\widehat \Sigma$. The information criteria are defined as
+%\[
+%\begin{array}{rcl}
+% MAIC
+%& = & \log \left| \widehat \Sigma \right| + 2 \frac{k'}{T} \\
+% MSBIC & = & \log \left| \widehat \Sigma \right| + \frac{k'}{T} \log T \\
+% MHQIC & = & \log \left| \widehat \Sigma \right| + \frac{2 k'}{T} \log(\log T) \\
+%\end{array}
+%\]
+%where $k'$ is the total number of regressors ($= n^2 k + n$ for $n$ equations,
+%each with $k$ lags of the $n$ variables, plus a constant term in each equation)
+%\item Info criterion is calculated for lags $0, \ldots, \bar k$
+%(with $\bar k$ prespecified), and the chosen number of lags is that
+%for which the information criterion is minimized
+%\end{itemize}
+%\end{frame}
+
+
+%\section{Johansen's Procedure}\subsection*{}
+%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%BeginExpansion
+%\begin{frame}%
+%%EndExpansion
+%
+%\frametitle{Limitations of Engle-Granger Procedure:}
+%
+%\begin{itemize}
+%\item Choice of the dependent variable $Y_t$ in Engle-Granger test is arbitrary. Selecting another $X_{it}$ as dependent variable should not
+%matter asymptotically (as number of observations $T\rightarrow \infty $),
+%but will make a difference in practice.
+%
+%\item Method can only be used if there is only a single unique cointegrating
+%relation, which involves $Y_{t}$. So $(X_{2t},\ldots ,X_{kt})$ are not
+%allowed to be cointegrated without $Y_{t}$.
+%
+%\item Although the OLS estimators $\hat{\beta}_{i}$ are consistent under
+%cointegration, they do not have an asymptotic normal distribution, so
+%standard inference ($t$-tests) fails.
+%\end{itemize}
+%
+%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%BeginExpansion
+%\end{frame}%
+%%EndExpansion
+%
+%
+%%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%%BeginExpansion
+%%\begin{frame}%
+%%%EndExpansion
+%%
+%%\frametitle{Multiple Cointegration Relationships}
+%%\begin{itemize}
+%%\item Johansen analyzes cointegration in the VAR framework.
+%%\item Suppose there are $n$ variables $Z_{it}$, which follow a VAR.
+%%\item Assume there are $r$ cointegrating relationships between them. The $r$ deviations from equilibrium can be written
+%%\begin{equation*}
+%%\mathbf{\beta }_{j}^{\prime }\mathbf{Z}_{t}=\beta _{j1}Z_{1t}+\beta
+%%_{j2}Z_{2t}+\ldots +\beta _{jn}Z_{nt},\qquad j=1,\ldots ,r,
+%%\end{equation*}
+%%where $\mathbf{\beta }_{i}$ are the \emph{\color{red}%
+%%cointegrating vectors}
+%%\item If $0<r<n$, we can rewrite the model as a VECM, with typical equation
+%%\begin{equation*}
+%%\Delta Z_{it}=\alpha _{i1}\mathbf{\beta }_{1}^{\prime }\mathbf{Z}%
+%%_{t-1}+\ldots +\alpha _{ir}\mathbf{\beta }_{r}^{\prime }\mathbf{Z}_{t-1}+%
+%%\text{lagged differences}+U_{it},
+%%\end{equation*}%
+%%where the $\alpha _{ij}$ are the adjustment coefficients (or loadings).
+%%
+%%\end{itemize}
+%%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%%BeginExpansion
+%%\end{frame}%
+%%%EndExpansion
+%%
+%%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%%BeginExpansion
+%%\begin{frame}%
+%%%EndExpansion
+%%
+%%\frametitle{Vector Error Correction Models}
+%%
+%%\begin{itemize}
+%%\item In matrix form, the VECM is%
+%%\begin{equation*}
+%%\Delta \mathbf{Z}_{t}= \Pi \mathbf{Z}_{t-1}+\Gamma _{1}\Delta \mathbf{Z}%
+%%_{t-1}+\ldots +\Gamma _{k-1}\Delta \mathbf{Z}_{t-k+1}+\mathbf{u}_{t},
+%%\end{equation*}%
+%%where $\mathbf{u}_{t}$ is vector white noise (mean zero, constant
+%%variance-covariance matrix, no (cross-)autocorrelation), and where $\Pi $
+%%and $\Gamma _{i}$ are $n\times n$ matrices.
+%%
+%%\item If there are $r$ cointegration relationships, $\Pi$ can be decomposed as
+%%\begin{equation*}
+%%\Pi =\mathbf{\alpha \beta }^{\prime }=\mathbf{%
+%%\alpha }_{1}\mathbf{\beta }_{1}^{\prime }+\ldots +\mathbf{\alpha }_{r}%
+%%\mathbf{\beta }_{r}^{\prime },
+%%\end{equation*}%
+%%where $\mathbf{\alpha }_{i}$ and $\mathbf{\beta }_{i}$ are $n$-vectors, so
+%%that $\mathbf{\alpha }=(\mathbf{\alpha }_{1},\ldots ,\mathbf{\alpha }_{r})$
+%%and $\mathbf{\beta }=$
+%%$(\mathbf{\beta }_{1},\ldots ,\mathbf{\beta }_{r})$ are $n\times r$ matrices.
+%%\item As the product of two $n\times r$ matrices, $\text{rank}\;\Pi =r<n$.
+%%\item $r$ is called the \emph{\color{red}cointegrating rank} (= number of separate
+%%cointegrating relations).
+%%\end{itemize}
+%%
+%%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%%BeginExpansion
+%%\end{frame}%
+%%%EndExpansion
+%%
+%%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%%BeginExpansion
+%%\begin{frame}%
+%%%EndExpansion
+%%
+%%\frametitle{Example: Term structure of interest rates}
+%%
+%%\begin{itemize}
+%%\item Suppose that $\mathbf{Z}=(R_{1},R_{2},R_{3})^{\prime }$, where $R_{1}$
+%%is the short rate (3 months), $R_{2}$ is the medium-term rate (1 year), and $%
+%%R_{3}$ is the long-term rate (10 years).
+%%
+%%\item Assume that the individual interest rates are $I(1)$, but all spreads
+%%\begin{equation*}
+%%(R_{2t}-R_{1t}),\qquad (R_{3t}-R_{1t}),\qquad (R_{3t}-R_{2t})
+%%\end{equation*}%
+%%are stationary. Note that the third is implied by the other two.
+%%
+%%\item Then a VECM (with $k=1$ lag) becomes%
+%%\begin{eqnarray*}
+%%\Delta R_{1t} &=&\alpha _{11}(R_{2}-R_{1})_{t-1}+\alpha
+%%_{12}(R_{3}-R_{1})_{t-1}+U_{1t}, \\
+%%\Delta R_{2t} &=&\alpha _{21}(R_{2}-R_{1})_{t-1}+\alpha
+%%_{22}(R_{3}-R_{1})_{t-1}+U_{2t}, \\
+%%\Delta R_{3t} &=&\alpha _{31}(R_{2}-R_{1})_{t-1}+\alpha
+%%_{32}(R_{3}-R_{1})_{t-1}+U_{3t},
+%%\end{eqnarray*}%
+%%so $r=2$, $\mathbf{\beta }_{1}=(-1,1,0)^{\prime }$ and $\mathbf{\beta }%
+%%_{2}=(-1,0,1)^{\prime }$.
+%%\end{itemize}
+%%
+%%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%%BeginExpansion
+%%\end{frame}%
+%%%EndExpansion
+%%
+%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%BeginExpansion
+%\begin{frame}%
+%%EndExpansion
+%
+%\frametitle{Johansen Procedure}
+%
+%\begin{itemize}
+%\item An alternative is to use \er{Johansen's procedure}.
+%\item Johansen has derived the MLE of the general VECM with normally distributed errors $\mathbf{u}_{t}$ and $k$ variables.
+%\item This facilitates likelihood ratio tests for $H_{0r}$: ``$r$ or fewer cointegrating relationships'' against the alternative ``more than $r$''
+%\item The test is known as the \emph{\color{red}Johansen trace test}. The test
+%statistics $\lambda _{trace}(r)$ can be expressed in terms of particular
+%eigenvalues $\hat{\lambda}_{i}$. Their asymptotic distribution under the
+%null is a multivariate version of the
+%Dickey-Fuller distribution.
+%
+%\item We reject for large positive values of the test statistic; critical
+%values and $p$-values are built into EViews and similar programs.
+%\end{itemize}
+%
+%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%BeginExpansion
+%\end{frame}%
+%%EndExpansion
+%
+%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%BeginExpansion
+%\begin{frame}%
+%%EndExpansion
+%
+%\frametitle{Johansen's cointegration test}
+%
+%These tests may be used to estimate the cointegrating rank $r$ in the
+%following way:
+%
+%\begin{enumerate}
+%\item Start with $r=0$;
+%
+%\item Test $H_{0r}$ with $\lambda _{trace}(r)$;
+%
+%\item If $H_{0r}$ is not rejected, then $\hat{r}=r$; if it is rejected,
+%replace $r$ by $r+1$ and go back to step 2;
+%
+%\item If $H_{0r}$ is rejected for all $r=0,1,\ldots ,k-1$, then conclude $%
+%\hat{r}=k$ (this corresponds to a stationary system).
+%\end{enumerate}
+%
+%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%BeginExpansion
+%\end{frame}%
+%%EndExpansion
+%
+%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%BeginExpansion
+%\begin{frame}%
+%%EndExpansion
+%
+%\frametitle{Treatment of constant and linear trend}
+%
+%Just like with the Dickey-Fuller test, we have to allow for a constant and
+%possibly a linear trend in the VECM. Eviews distinguishes five cases:
+%
+%\begin{itemize}
+%\item[1] No constant, no trend. This implies that the variables have mean zero. Rarely applicable.
+%
+%\item[2] Constant in the cointegrating relations, no trend. Applicable when the data have no trend (interest rates, inflation, real
+%exchange rates).
+%
+%\item[3] Constant in the VECM equation. This leads to a drift, so applicable for trending series (real gdp, stock prices). This is the default, for good reasons.
+%\item[4] Constant in VECM, trend in cointegration relations. Similar to 3, but hard to interpret.
+%
+%\item[5] Trend in the VECM equation. Leads to a quadratic trend. Rarely applicable.
+%\end{itemize}
+%
+%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%BeginExpansion
+%\end{frame}%
+%%EndExpansion
+%
+%%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%%BeginExpansion
+%%\begin{frame}%
+%%%EndExpansion
+%%
+%%\frametitle{Example: Spot and forward DMark/US\$ exchange rates}
+%%
+%%Consider the same exchange-rate example but now with $\mathbf{Z}%
+%%_{t}=(s_{t},f_{1t},f_{3t})^{\prime }$, where $f_{3t}$ is the log-3-month
+%%forward rate.
+%%
+%%Trace test results, with restricted constant (option 2) and $k-1=2$ lagged
+%%differences:
+%%
+%%\begin{center}
+%%\begin{tabular}{cccc}
+%%\hline\hline
+%%$\quad r\quad $ & $\lambda _{trace}(r)$ & $5\%$ crit. val. & $p$-value \\
+%%\hline\hline
+%%$0$ & $84.51$ & $35.19$ & $0.000$ \\
+%%$1$ & $26.00$ & $20.26$ & $0.007$ \\
+%%$2$ & $4.367$ & $9.165$ & $0.360$ \\ \hline\hline
+%%\end{tabular}
+%%\end{center}
+%%
+%%This leads to the conclusion of $\hat{r}=2$, i.e., two different
+%%cointegrating relations between these three series.
+%%
+%%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%%BeginExpansion
+%%\end{frame}%
+%%%EndExpansion
+%%
+%%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%%BeginExpansion
+%%\begin{frame}%
+%%%EndExpansion
+%%
+%%\frametitle{Multiple cointegrating vectors, identification}
+%%
+%%\begin{itemize}
+%%\item When $r=1$, a cointegrating relation $\mathbf{\beta }^{\prime }\mathbf{%
+%%Z}_{t}$ can be easily interpreted and identified by normalizing the first
+%%component of $\mathbf{\beta }$ to $-1$, such that%
+%%\begin{equation*}
+%%\mathbf{\beta }^{\prime }\mathbf{Z}_{t}=-1Z_{1t}+\beta _{2}Z_{2t}+\ldots
+%%+\beta _{n}Z_{nt},
+%%\end{equation*}%
+%%so that the equilibrium relationship reads $Z_{1}=\beta
+%%_{2}Z_{2}+\ldots +\beta _{n}Z_{n}$ (as in the single equation ECM).
+%%Note that EViews normalizes to $1$ instead of $-1$.
+%%
+%%\item When $r>2$, this is no longer sufficient to separate the different
+%%relations $\mathbf{\beta }_{i}^{\prime }\mathbf{Z}_{t},i=1,\ldots ,r$. Note
+%%that if both $\mathbf{\beta }_{1}^{\prime }\mathbf{Z}_{t}$ and $\mathbf{%
+%%\beta }_{2}^{\prime }\mathbf{Z}_{t}$ are stationary, then so is
+%%\begin{equation*}
+%%\mathbf{\beta }_{3}^{\prime }\mathbf{Z}_{t}=a\mathbf{\beta }_{1}^{\prime }%
+%%\mathbf{Z}_{t}+b\mathbf{\beta }_{2}^{\prime }\mathbf{Z}_{t},
+%%\end{equation*}%
+%%for any $a$ and $b$.
+%%\end{itemize}
+%%
+%%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%%BeginExpansion
+%%\end{frame}%
+%%%EndExpansion
+%%
+%%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%%BeginExpansion
+%%\begin{frame}[shrink]%
+%%%EndExpansion
+%%
+%%\frametitle{Multiple cointegrating vectors, identification}
+%%
+%%\begin{itemize}
+%%\item In order to avoid this, we need to impose \emph{\color{red}identifying
+%%restrictions}, that make each $\mathbf{\beta }_{i}$ unique. The easiest way
+%%to accomplish this is to impose%
+%%\begin{eqnarray*}
+%%\beta _{ii} &=&-1,\qquad i=1,\ldots ,r, \\
+%%\beta _{ij} &=&0,\qquad 1\leq j\leq r,\quad j\neq i,\qquad i=1,\ldots ,r.
+%%\end{eqnarray*}%
+%%This is equivalent to solving the first $r$ series of
+%%$\mathbf{Z}_{t}$ in terms of the last $n-r$ series, i.e.,
+%%$\mathbf{\beta }'=[-\mathbf{I}_r\quad \mathbf{\beta}^{\ast\prime}]$,
+%%where $ \mathbf{\beta}^{\ast}$ has dimension $n-r\times r$.
+%%
+%%\item In the spot-forward exchange rate example, an identified
+%%representation is:%
+%%\begin{eqnarray*}
+%%s_{t} &=&0.018+0.973f_{3t}+e_{1t}, \\
+%%f_{1t} &=&0.012+0.983f_{3t}+e_{2t}.
+%%\end{eqnarray*}%
+%%This implies the relation $s_{t}=0.006+0.990f_{1t}+e_{3t}$.
+%%
+%%\item Further restrictions are over-identifying, and can be tested by ($\chi
+%%^{2}$) likelihood ratio tests.
+%%\end{itemize}
+%%
+%%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%%BeginExpansion
+%%\end{frame}%
+%%\section*{Example}\subsection*{bla}
+%%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%%BeginExpansion
+%%\begin{frame}[shrink]%
+%%%EndExpansion
+%%
+%%\frametitle{Example: Spot and forward DMark/US\$ exchange rates}
+%%
+%%$s_{t}$ and $f_{1t}$ are logarithms of the spot and one-month forward
+%%exchange rates of the DMark versus US dollar, January 1996 -- December 2006
+%%(monthly data).
+%%
+%%Idea: Spot and forward rate are linked by the no-arbitrage relation
+%%$e^{-r_{USD,t}}S_t=e^{-r_{DM,t}}F_t$, or $s_t=r_{USD,t}-r_{DM,t}+f_t$. If $r_{USD,t}-r_{DM,t}$ is stationary, $s_t$ and $f_t$ are cointegrated.
+%%
+%%\begin{enumerate}
+%%\item \emph{Test the unit root hypothesis for both variables:} ADF tests for
+%%$s_{t}$ and $f_{1t}$ are $-0.951~[0.77]$, for both series (constant, no
+%%trend; lags determined by Schwarz criterion).
+%%
+%%\item \emph{Apply the Engle-Granger procedure: }OLS estimation gives $%
+%%s_{t}=0.002+0.998f_{1t}+\hat{u}_{t}$. The ADF test statistic on this
+%%residual series is $-2.099$, which means that we cannot reject the null of
+%%no cointegration.
+%%\end{enumerate}
+%%
+%%\emph{Explanation}: the forward premium $f_{1t}-s_{t}$ has a very small
+%%scale, so that $s_{t}$ and $f_{1t}$ are almost indistinguishable visibly,
+%%but it is too persistent to be stationary.
+%%
+%%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%%BeginExpansion
+%%\end{frame}%
+%%%EndExpansion
+%%
+%%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%%BeginExpansion
+%%\begin{frame}%
+%%%EndExpansion
+%%\begin{block}{Spot and forward rates, forward premium, and residual}
+%%\centerline{\includegraphics[height=3in]{spotforward}}
+%%\end{block}
+%%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%%BeginExpansion
+%%\end{frame}%
+%%%EndExpansion
+%\section*{Example continued}
+%\begin{frame}[shrink]\frametitle{Example continued}
+%\begin{itemize}
+%\item[Step 1] Apply Johansen integration test.\\ Choose Option 3 (unrestricted constant) and one lagged $\Delta$ on RHS (lag specification \texttt{1 1}), because that's what we found in the Engle-Granger approach.
+%\begin{block}{Johansen test}
+%\begin{center}
+%\includegraphics[width=0.35\textwidth]{johansen.png}
+%\end{center}
+%\end{block}
+%$H_{00}$: ``No Cointegration'' is rejected. $H_{01}$: ``One cointegrating relationship'' is not. Conclusion: there is one cointegrating (=equilibrium) relationship.
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}[shrink]\frametitle{Example continued}
+%\begin{itemize}
+%\item[Step 2] Estimate VECM. Choose ``1 cointegrating relationship'', and lag specification \texttt{1 1}.
+%\begin{center}
+%\includegraphics[height=0.6\textheight]{vecm3.png}
+%\end{center}
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}\frametitle{Example continued}
+%\begin{itemize}
+%\item Final model is
+%{\tiny
+%\begin{align*}
+%\Delta \textrm{loil}_t&=0.0034-0.034(\textrm{loil}_{t-1}-0.914\textrm{lgold}_{t-1}+2.19)+0.25\Delta\textrm{loil}_{t-1}+0.05\Delta\textrm{lgold}_{t-1}+e_{1t}\\
+%\Delta \textrm{lgold}_t&=0.0054-0.007(\textrm{loil}_{t-1}-0.914\textrm{lgold}_{t-1}+2.19)+0.049\Delta\textrm{loil}_{t-1}+0.019\Delta\textrm{lgold}_{t-1}+e_{2t}
+%\end{align*}}
+%\item Note how similar the first equation is to what we found with Engle-Granger! Here, too, $\alpha_2=-0.007$ is insignificant, so we could ignore the 2nd equation.
+%\item The cointegrating vector is $(1, -0.914)$.
+%\item Interpretation: there is an equilibrium relationship between \textrm{loil} and \textrm{lgold}. In case of a disequilibrium, \textrm{loil} adjusts towards the equilibrium. The adjustment amounts to 3.4\% per period.
+%\end{itemize}
+%\end{frame}
+\section{Epilogue}
+\begin{frame}
+\frametitle{Learning Goals}
+Students
+\begin{itemize}
+\item Understand the concept of cointegration,
+\item are able to test for cointegration using the Engle-Granger procedure,
+\item and are able to estimate an error correction model.
+\end{itemize}
+\end{frame}
+\frameit{Homework}{
+\item Exercise 7
+\item Problem 6 from Chapter 8 of Brooks (2019)
+}
+\end{document}

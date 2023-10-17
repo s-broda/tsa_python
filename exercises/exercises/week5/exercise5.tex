@@ -1,0 +1,41 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{a4wide}
+\usepackage{amsmath, amsfonts, dsfont, booktabs, graphicx, natbib, a4, times, microtype, hyperref}
+\newcommand{\E}{\ensuremath{{\mathbb E}}} % expected value
+\def\func#1{\mathop{\rm #1}}
+\begin{document}
+\title{Exercise 5}
+\author{Simon A.\ Broda}
+\date{}
+\maketitle
+
+\begin{enumerate}
+
+\item
+\begin{enumerate}
+\item Load the data in the file \texttt{sp500.csv} and construct the log returns (in percent). Make a time series plot and a histogram of the returns. Then, produce a correlogram of the squared residuals, and test the first 5 autocorrelations of the squared returns for joint significance using the Ljung-Box $Q$-test. Interpret your results.
+\item Perform an ARCH-LM test by regressing the returns on an intercept, and feeding the residuals into \verb+sm.stats.diagnostic.het_arch+.
+\item Compute the historical volatility and plot it, by using a \href{https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html}{rolling} object.
+\item Compute the EWMA volatility and plot it, by using a  \href{https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.ewm.html}{ewm} object. Also, try and recreate the plot with the EWMA volatilities for different values of $\lambda$ shown in the slides.
+\item Find a suitable (G)ARCH or TARCH model. Start with a GARCH(1, 1) or an ARCH(6) model, and determine whether it needs to be adjusted. You may need to install the \texttt{arch} package (\href{https://arch.readthedocs.io/en/latest/univariate/introduction.html}{docs}). This can be done by putting \texttt{!pip install arch} into a Jupyter cell and executing it.
+\item Make a plot of the volatility estimates that your model generates. Then, compute the unconditional (or average) volatility, and plot the NIC.
+\item Forecast the volatility for $T+1$.
+\end{enumerate}
+\item
+\begin{enumerate}
+\item Show that
+\[
+\widehat{\sigma}_{t+1,EWMA}^{2} =\lambda\widehat{\sigma}_{t,EWMA}^{2}+(1-\lambda )r_{t}^{2},\qquad 0<\lambda <1.
+\]
+%\item Show that in the GARCH(1, 1) model,
+%\[
+%\widehat{\sigma} _{t+1}^{2}=\widehat{\sigma}^2+\hat{\alpha}(\hat{u}_{t}^{2}-\widehat{\sigma}^2)+\hat{\beta} (\widehat{\sigma} _{t}^{2}-\widehat{\sigma}^2),
+%\]
+%with $\widehat{\sigma}^2=\hat{\omega} /(1-\hat\alpha -\hat\beta )$.
+%\item Show that in the GARCH(1, 1) model,
+%\[
+%\widehat{\sigma} _{t+s}^{2}=\widehat{\sigma} ^{2}+(\hat\alpha+\hat\beta)^{s-1} (\widehat{\sigma}_{t+1}^{2}-\widehat{\sigma} ^{2}).
+%\]
+\end{enumerate}
+\end{enumerate}
+\end{document} 

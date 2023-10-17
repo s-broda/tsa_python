@@ -1,0 +1,54 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{a4wide}
+\usepackage{amsmath, amsfonts, dsfont, booktabs, graphicx, natbib, a4, times, microtype, hyperref}
+\newcommand{\E}{\ensuremath{{\mathbb E}}} % expected value
+\def\func#1{\mathop{\rm #1}}
+\begin{document}
+\title{Exercise 7}
+\author{Simon A.\ Broda}
+\date{}
+\maketitle
+
+\begin{enumerate}
+
+\item Until 1971, as part of the Bretton-Woods system of fixed exchange rates, the US dollar was convertible to gold, i.e., it was possible for foreign central banks to redeem US dollars for gold at a fixed rate of 35\$ per troy ounce, so that the price of gold was fixed. In 1971, US president Nixon unilaterally cancelled the direct convertibility, ultimately ending the Bretton-Woods agreement. Gold became a floating asset, and its price increased sharply; in other words, the US\$ was massively devalued. In this exercise, we will analyze the hypothesis that the increasing price (in US\$) of oil is not a consequence of an increased demand for (or a reduced supply of) oil, but rather of a continued devaluation of the US\$. We have at our disposal monthly data from April 1968 to January 2017 (586 observations) on the following variables:
+\begin{itemize}
+\item GOLD, the spot price of one troy ounce of gold in US\$;
+\item OIL, the spot price of one barrel of WTI crude oil in US\$.
+\end{itemize}
+\begin{enumerate}
+\item Assuming that GOLD is integrated of order one, explain why the hypothesis that the relative price of oil (in troy ounces of gold per barrel) is stationary implies cointegration between log(OIL) and log(GOLD).
+\item Using the file \verb+oil_gold_2017.csv+, analyze whether this cointegrating relationship can be found in the data, based on the Engle-Granger procedure. The following steps are required:
+\begin{enumerate}
+	\item Transform the data into logs, and plot the two resulting series together. What do you notice?
+	\item Perform an ADF test for both series. Make sure to specify the deterministic regressors (constant and/or trend) correctly. What do you conclude?
+	\item  Estimate the long-run relationship (cointegrating relationship)
+	\[
+	\mbox{loil}_t=\beta_1+\beta_2\mbox{lgold}_t+U_t.
+	\]
+	State the cointegrating vector, and make a plot of the residuals.
+	\item Perform the Engle-Granger test, i.e., apply an ADF test to the residuals $\hat{u}_t$. What do you conclude?
+	\item Estimate a vector error correction model. Write the two estimated equations out.
+\end{enumerate}
+%\item Same, but using the Johansen procedure.
+\end{enumerate}
+\item
+Consider the model
+\begin{align*}
+Y_t&=\beta_1 +\beta_2 X_t+U_{1,t}\\
+X_t&=X_{t-1}+U_{2,t}
+\end{align*}
+where $\beta_2\neq0$, $U_{1,t},U_{2,t}\stackrel{\mathrm{iid}}{\sim}(0,\sigma^2)$ independently of each other.
+\begin{enumerate}
+\item Is $X_t$ stationary?
+\item Is $Y_t$ stationary?
+\item Are $X_t$ and $Y_t$ cointegrated? If yes, what is the cointegrating vector?
+\item Derive the bivariate VECM for $Y_t$ and $X_t$.
+\end{enumerate}
+
+
+
+
+
+\end{enumerate}
+\end{document} 

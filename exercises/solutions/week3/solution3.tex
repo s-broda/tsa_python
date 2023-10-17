@@ -1,0 +1,110 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{amsmath, amsfonts, dsfont, booktabs, graphicx, natbib, a4wide, times, microtype, hyperref}
+\newcommand{\E}{\ensuremath{{\mathbb E}}} % expected value
+\def\func#1{\mathop{\rm #1}}
+\begin{document}
+\title{Solution to Exercise 3}
+\author{Simon A.\ Broda}
+\date{}
+\maketitle
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item We clearly see that unless $|\phi_1|$ approaches 1, the process is stationary; the time series plot looks mean-reverting, and the sample autocorrelations decay exponentially as they should. We also see that $\bar y$ is close to $\E[Y_t]=\alpha/(1-\phi_1)$, and that $s^2_y$ is close to $\func{var}[Y_t]=\sigma^2/(1-\phi_1^2)$.
+\item If $\phi_1=1$, we have a random walk, and $\alpha$ becomes the drift: $\E[Y_t]=Y_0+\alpha\cdot t$.
+\item See Jupyter notebook.
+\end{enumerate}
+\item See Jupyter notebook.
+
+\item
+\begin{enumerate}
+\item By repeatedly plugging in,
+\begin{eqnarray*}
+Y_t&=&\alpha+Y_{t-1}+U_t\\
+   &=&\alpha+(\alpha +Y_{t-2}+U_{t-1})+U_t\\
+  &\vdots&\\
+&=&Y_0+\alpha\cdot t+\sum_{s=1}^t U_s,
+\end{eqnarray*}
+so that
+\[
+\E[Y_t]=Y_0+ \alpha\cdot t,
+\]
+because white noise has expectation zero. The derivation of the variance is the same as for the case without drift from last week and thus omitted here.
+\item The previous question shows that the random walk with drift is not stationary, because its mean and variance change over time. For it to be I(1), its first difference $\Delta Y_t$ should be stationary.
+We immediately se that $\Delta Y_t=Y_t-Y_{t-1}=(\alpha+Y_{t-1}+U_t)-Y_{t-1}=\alpha + U_t$. This is just white noise plus a constant, which is stationary.
+\item
+Since $\{U_t\}$ is white noise, $U_t$  is uncorrelated with $Y_{t-1}$, so
+\begin{align*}
+\mathrm{var}(Y_t) &= \func{var}\left(\alpha+\phi_1Y_{t-1}+U_{t}\right)\\
+&= \phi_1^2 \mathrm{var}(Y_{t-1}) + \mathrm{var}(U_t) + 2
+\phi_1 \mathrm{cov}(Y_{t-1},U_{t})
+&= \phi_1^2 \mathrm{var}(Y_{t}) +
+\sigma^2,
+\end{align*}
+where the final equality holds because $Y_t$ is stationary, which implies that $\func{var}(Y_t)=\func{var}(Y_{t-1})$. Thus, if and only if $|\phi_1 |<1$,
+\begin{equation*}
+\mathrm{var}(Y_t) = \frac{\sigma^2}{1-\phi_1^2}.
+\end{equation*}
+Note that $\mathrm{var}(Y_t) > \mathrm{var}(Y_{t-1})$ if $|\phi_1 |\ge 1$, i.e., the variance grows without bounds in that case.
+\item \textbf{Optional}: For the MA(1) process
+\begin{equation*}
+Y_t=\alpha + U_t + \theta_1 U_{t-1},
+\end{equation*}
+we have that
+\begin{align*}
+\E[Y_t]&=\E[\alpha + U_t + \theta_1 U_{t-1}]\\
+&=\alpha + \E[U_t] + \theta_1 \E[U_{t-1}]\\
+&=\alpha.
+\end{align*}
+For the variance,
+\begin{align*}
+\gamma_0&=\func{var}(Y_t)=\func{var}(\alpha + U_t + \theta_1 U_{t-1})\\
+&=\func{var}(U_t + \theta_1 U_{t-1})\\
+&=\func{var}(U_t) + \theta_1^2\func{var}( U_{t-1})+2\theta_1\func{cov}(U_t, U_{t-1})\\
+&=\sigma^2+\theta_1^2\sigma^2+0\\
+&=\sigma^2(1+\theta_1^2).
+\end{align*}
+For the first autocovariance,
+\begin{align*}
+\gamma_1&=\func{cov}(Y_t, Y_{t-1})\\
+&=\func{cov}(\alpha + U_t + \theta_1 U_{t-1}, \alpha + U_{t-1} + \theta_1 U_{t-2})\tag{$\dagger$}\label{ma}\\
+&=\func{cov}(\theta_1 U_{t-1},U_{t-1})\\
+\intertext{because white noise is uncorrelated. Hence}
+\gamma_1&=\theta_1\func{cov}( U_{t-1},U_{t-1})\\
+&=\theta_1\func{var}(U_{t-1})\\
+&=\theta_1\sigma^2.
+\end{align*}
+Higher order autocorrelations will be zero, because there will no common $U_t$ terms in \eqref{ma}.
+Plugging these into the definition of the ACF, we have
+\[
+\tau_1=\frac{\gamma_1}{\gamma_0}=\frac{\theta_1\sigma^2}{\sigma^2(1+\theta_1^2)}=\frac{\theta_1}{1+\theta_1^2}.
+\]
+
+
+\item \textbf{Optional}:
+The ACF is obtained by repeatedly
+substituting $Y_{t-i} = \phi_1 Y_{t-i-1} + \alpha + U_{t-i}$:
+\begin{eqnarray}
+Y_t &=&\phi_1 Y_{t-1}+ \alpha + U_t  \notag \\
+&=&\phi_1 ^2Y_{t-2} + \phi_1 (\alpha + U_{t-1}) + \alpha + U_t  \notag \\
+&=&\phi_1 ^3 Y_{t-3}+ \phi_1 ^2 (\alpha + U_{t-2} )+ \phi_1 (\alpha + U_{t-1})+
+\alpha + U_t  \notag \\
+&\vdots &  \notag \\
+&=&\phi_1 ^k Y_{t-k}+\sum_{i=0}^{k-1}\phi_1 ^i \alpha + \sum_{i=0}^{k-1}\phi_1
+^i U_{t-i}.  \label{subst}
+\end{eqnarray}
+
+Therefore,
+\begin{align*}
+\gamma_k &= \mathrm{cov}(Y_t,Y_{t-k}) = \phi_1 ^k \mathrm{cov}%
+(Y_{t-k},Y_{t-k}) + \sum_{i=0}^{k-1}\phi_1 ^i \mathrm{cov}(U_{t-i},Y_{t-k})\\
+&= \phi_1 ^k \mathrm{var}(Y_{t-k}),
+\end{align*}
+so that
+\begin{equation*}
+\tau_k = \frac{\gamma_k}{\gamma_0} = \phi_1 ^k.
+\end{equation*}
+
+\end{enumerate}
+\end{enumerate}
+\end{document} 

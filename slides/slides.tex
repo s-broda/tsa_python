@@ -1,0 +1,16 @@
+\documentclass[a4paper]{article}
+\usepackage{pdfpages, pgffor}
+\setlength{\fboxrule}{0.3mm}
+
+\begin{document}
+\newwrite\myoutput
+\immediate\openout\myoutput=\jobname.options
+\immediate\write\myoutput{\unexpanded{\documentclass[10pt, handout, aspectratio=169]{beamer}}} %43 for 4x3, 169 for 16x9, 1610 for 16x10
+\immediate\closeout\myoutput
+\foreach \n in {1,...,8}{
+    \IfFileExists{week\n/week\n.tex}{
+        \immediate\write18{texify.exe --pdf  --clean week\n/week\n.tex}
+        \includepdf[pages=-,nup=2x2,delta=5pt 30pt,landscape=true,frame=true,column=false,noautoscale=false]{week\n.pdf}
+    }
+}
+\end{document}

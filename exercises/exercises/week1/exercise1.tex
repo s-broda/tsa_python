@@ -1,0 +1,43 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{amsmath, amsfonts, dsfont, booktabs, graphicx, natbib, a4wide, times, microtype, hyperref}
+\begin{document}
+\title{Exercise 1}
+\author{Simon A.\ Broda}
+\date{}
+\maketitle
+
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item \label{q1} Open the file \texttt{maunaloa.csv}; this is a famous data set used in machine learning. Make a time series plot.
+\item \label{q2} Estimate a linear trend by regressing the \texttt{CO2} series on an intercept and a time trend. Hint: you can add a time trend to a dataframe \verb+df+ as follows.
+\begin{verbatim}
+	import statsmodels.tsa.api as tsa
+	df = tsa.add_trend(df, trend="t")
+\end{verbatim}
+\item \label{q3} Plot the data together with the estimated linear trend, and the residuals. An easy way to do this is
+\begin{verbatim}
+	import statsmodels.api as sm
+	sm.graphics.plot_regress_exog(model, "trend");
+\end{verbatim}
+What do you notice?
+\item \label{q4} Produce a forecast for Sept 1st, 2004 (one month after the sample ends), first manually using the fitted model
+\[
+\widehat{Y_t} = \widehat{\beta_0}+\widehat{\beta_1} t,
+\]
+then using Python.
+\item Repeat Questions \ref{q2} through \ref{q4}, but using a quadratic trend.
+\item Repeat Questions \ref{q2} through \ref{q4}, but using an exponential trend.
+\end{enumerate}
+\item
+\begin{enumerate}
+\item Compute the 3rd order moving average of the \texttt{CO2} series for Feb 1st, 1964, both by hand and using Python. Hint: use a \href{https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rolling.html}{\texttt{rolling}} object.
+\item Estimate the trend with a 12 month moving average (12 months are necessary to cover a full cycle). Then plot the resulting trend estimate and the data together in a time series plot.
+\end{enumerate}
+\item
+\begin{enumerate}
+\item Estimate a model with a linear trend and 12 monthly dummies (and no intercept) for the \texttt{CO2} series. Then, produce an (in-sample) forecast for August 1st, 2004, both by hand and using Python. Plot the data together with the estimated linear trend, and the residuals.
+\item Same, but include an intercept. This will automatically remove one dummy.
+\end{enumerate}
+\end{enumerate}
+\end{document} 

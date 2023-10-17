@@ -1,0 +1,53 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{a4wide}
+\usepackage{amsmath, amsfonts, dsfont, booktabs, graphicx, natbib, a4, times, microtype, hyperref}
+\newcommand{\E}{\ensuremath{{\mathbb E}}} % expected value
+\def\func#1{\mathop{\rm #1}}
+\begin{document}
+\title{Solution to Exercise 5}
+\author{Simon A.\ Broda}
+\date{}
+\maketitle
+
+\begin{enumerate}
+
+
+\item See Jupyter notebook.
+\item
+\begin{enumerate}
+\item Splitting out the first term of the sum immediately yields
+\begin{align*}
+ \widehat{\sigma}_{t+1,EWMA}^{2}  &=(1-\lambda )\sum_{j=0}^{\infty }\lambda ^{j}r_{t-j}^{2} \\
+ \widehat{\sigma}_{t+1,EWMA}^{2}  &=(1-\lambda ) \lambda^0 r_{t-0}^2+(1-\lambda )\sum_{j=1}^{\infty }\lambda ^{j}r_{t-j}^{2} \\
+ \widehat{\sigma}_{t+1,EWMA}^{2}  &=(1-\lambda ) r_{t}^2+(1-\lambda )\sum_{j=0}^{\infty }\lambda ^{j+1}r_{t-1-j}^{2} \\
+ \widehat{\sigma}_{t+1,EWMA}^{2}  &=(1-\lambda ) r_{t}^2+\lambda(1-\lambda )\sum_{j=0}^{\infty }\lambda ^{j}r_{t-1-j}^{2} \\
+&=(1-\lambda )r_{t}^{2}+\lambda\widehat{\sigma}_{t,EWMA}^{2}.
+\end{align*}
+%\item Solving $\widehat{\sigma}^2=\hat{\omega} /(1-\hat\alpha -\hat\beta )$ for $\hat{\omega}$, we find $\hat{\omega}=\widehat{\sigma}^2\cdot(1-\hat\alpha -\hat\beta )$. Plugging this into
+%the equation
+%\begin{align*}
+%\widehat{\sigma} _{t+1}^{2}&=\hat{\omega}+\hat{\alpha}\hat{u}_{t}^{2}+\hat{\beta} \widehat{\sigma} _{t}^{2}\\
+%\intertext{yields}
+%\widehat{\sigma} _{t+1}^{2}&=\widehat{\sigma}^2\cdot(1-\hat\alpha -\hat\beta )+\hat{\alpha}\hat{u}_{t}^{2}+\hat{\beta} \widehat{\sigma} _{t}^{2}\\
+%&=\widehat{\sigma}^2+\hat{\alpha}(\hat{u}_{t}^{2}-\widehat{\sigma}^2)+\hat{\beta} (\widehat{\sigma} _{t}^{2}-\widehat{\sigma}^2).
+%\end{align*}
+%\item
+%The result of the previous question also implies that
+%\begin{align}
+%\widehat{\sigma} _{t+2}^{2}&=\widehat{\sigma}^2+\hat{\alpha}(\hat{u}_{t+1}^{2}-\widehat{\sigma}^2)+\hat{\beta} (\widehat{\sigma} _{t+1}^{2}-\widehat{\sigma}^2).\notag
+%\intertext{Replacing the unknown $\hat{u}_{t+1}^{2}$ with its forecast $\widehat{\sigma} _{t+1}^{2}$, we see that}
+%\widehat{\sigma} _{t+2}^{2}&=\widehat{\sigma}^2+\hat{\alpha}(\widehat{\sigma} _{t+1}^{2}-\widehat{\sigma}^2)+\hat{\beta} (\widehat{\sigma} _{t+1}^{2}-\widehat{\sigma}^2)\notag\\
+%\widehat{\sigma} _{t+2}^{2}&=\widehat{\sigma} ^{2}+(\hat\alpha+\hat\beta) (\widehat{\sigma}_{t+1}^{2}-\widehat{\sigma} ^{2}).\label{eq1}\\
+%\intertext{Equation \eqref{eq1} also implies that}
+%\widehat{\sigma} _{t+3}^{2}&=\widehat{\sigma} ^{2}+(\hat\alpha+\hat\beta) (\widehat{\sigma}_{t+2}^{2}-\widehat{\sigma} ^{2}),\label{eq2}\\
+%\intertext{and plugging \eqref{eq1} into \eqref{eq2} results in}
+%\widehat{\sigma} _{t+3}^{2}&=\widehat{\sigma} ^{2}+(\hat\alpha+\hat\beta) ((\hat\alpha+\hat\beta) (\widehat{\sigma}_{t+1}^{2}-\widehat{\sigma} ^{2}))\notag\\
+%&=\widehat{\sigma} ^{2}+(\hat\alpha+\hat\beta)^2 (\widehat{\sigma}_{t+1}^{2}-\widehat{\sigma} ^{2}).\notag\\
+%\intertext{Iterating this process produces}
+%\widehat{\sigma} _{t+s}^{2}&=\widehat{\sigma} ^{2}+(\hat\alpha+\hat\beta)^{s-1} (\widehat{\sigma}_{t+1}^{2}-\widehat{\sigma} ^{2})\notag
+%\end{align}
+%as claimed.
+
+\end{enumerate}
+\end{enumerate}
+\end{document} 

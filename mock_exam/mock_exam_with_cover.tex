@@ -1,0 +1,8 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage{pdfpages}
+\begin{document}
+\immediate\write18{texify.exe --pdf  --clean mock_exam.tex}
+\includepdf[pages={1}]{coverpage.pdf}
+\includepdf[pages={3-}]{mock_exam.pdf}
+\includepdf[pages={1-3, 5}]{tables.pdf}
+\end{document} 

@@ -1,0 +1,21 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{amsmath, amsfonts, dsfont, booktabs, graphicx, natbib, a4wide, times, microtype, hyperref}
+\begin{document}
+\title{Assignment 1}
+\author{Simon A.\ Broda}
+\date{}
+\maketitle
+In this assignment, you will analyze a security of your choice regarding the efficient market hypothesis. Follow the steps below, document them in a Jupyter notebook, and upload the notebook to Ilias.
+\begin{enumerate}
+	\item Use the \href{https://aroussi.com/post/python-yahoo-finance}{yfinance} package to download daily historical prices (at least 5 years) for a stock or index of your choice.
+	\item Make a time series plot.
+    \item Construct the log prices and plot their ACF and PACF. Comment on your findings.
+    \item Use the ADF test to test if the log prices are integrated.
+    \item Construct the log returns (in percent). Plot their ACF and PACF, and comment on your findings. Are any autocorrelations significant?\label{ac}
+    \item Test if the first 10 autocorrelations are significant, using a $Q$-test.
+    \item Follow the Box-Jenkins procedure to select an adequate AR/MA/ARMA model; this amounts to making an initial guess for $p$ and/or $q$, fitting the model, and testing if the residuals are autocorrelated. Rinse and repeat until no significant autocorrelation remains. Note: if you haven't found any significant autocorrelation in Step \ref{ac} in the first place, just estimate an ARMA(1, 1) and test its residuals.
+    \item Summarise your findings in light of the efficient market hypothesis.
+    \item Use your model to predict both the log return and the log price one day out of sample.
+
+\end{enumerate}
+\end{document} 

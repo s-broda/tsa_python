@@ -1,0 +1,41 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{amsmath, amsfonts, dsfont, booktabs, graphicx, natbib, a4wide, times, microtype, hyperref}
+\newcommand{\E}{\ensuremath{{\mathbb E}}} % expected value
+\def\func#1{\mathop{\rm #1}}
+\begin{document}
+\title{Exercise 3}
+\author{Simon A.\ Broda}
+\date{}
+\maketitle
+
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item Open the file \texttt{simulations.xlsx}. The sheet ``AR(1)'' simulates $T=1000$ observations from an AR(1) process. Play around with $\alpha$ and $-1<\phi_1<1$ and describe your observations.
+\item Also try setting $\phi_1=1$ and describe the effect of $\alpha$.
+\item The file \verb+simulated_data.csv+ contains three series simulated using the same spreadsheet, \texttt{simulation.xlsx}, one each for an AR(1), an MA(1), and an ARMA(1, 1) process. The AR and ARMA processes use $\phi_1=0.7$, and the MA and ARMA processes use $\theta_1=0.7$. Plot the sample ACF and PACF for both, and describe your observations.
+\end{enumerate}
+\item
+\begin{enumerate}
+\item Use the Box-Jenkins approach to model year-on-year real GDP growth. The (quarterly) GDP data can be found in the file \texttt{realgdpch.csv}. You will need to transform them into year-on-year growth rates first, by doing
+\begin{verbatim}
+df["YoY_GROWTH"] = np.log(df["REAL_GDP"]) \
+                 - np.log(df["REAL_GDP"]).shift(4)
+\end{verbatim}
+
+\item Produce forecasts for 2022Q3 and 2022Q4, both manually and using Python. Do this for
+\begin{enumerate}
+	\item an MA(3) model, and
+	\item an AR(1) model.
+\end{enumerate}
+\end{enumerate}
+\item
+\begin{enumerate}
+\item Obtain the mean and variance of a random walk with drift.
+\item Show that the random walk with drift is integrated of order 1.
+\item Derive the expression for the variance of a stationary AR(1) given in the slides.
+\item \textbf{Optional}: Find the mean, variance, and ACF of an MA(1).
+\item \textbf{Optional}: Find the ACF of a stationary AR(1).
+\end{enumerate}
+\end{enumerate}
+\end{document} 

@@ -1,0 +1,47 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{a4wide}
+\usepackage{amsmath, amsfonts, dsfont, booktabs, graphicx, natbib, a4, times, microtype, hyperref, hyperref}
+\newcommand{\E}{\ensuremath{{\mathbb E}}} % expected value
+\def\func#1{\mathop{\rm #1}}
+\begin{document}
+\title{Solution to Exercise 7}
+\author{Simon A.\ Broda}
+\date{}
+\maketitle
+
+\begin{enumerate}
+
+
+\item
+\begin{enumerate}
+\item If the relative price of oil expressed in units of gold, $\mbox{oil}_t/\mbox{gold}_t$, is stationary, then this implies that $\log(\mbox{oil}_t/\mbox{gold}_t)=\log (\mbox{oil}_t) - \log(\mbox{gold}_t)$ is also stationary, so $\log(\mbox{oil}_t)$ and $\log(\mbox{gold}_t)$ must be cointegrated with cointegrating vector (1, -1) if the individual series are integrated.
+\item See Jupyter notebook.
+\end{enumerate}
+\item \begin{enumerate}
+\item $X_t$ is a random walk, hence $I(1)$. So no, it is not stationary.
+\item $Y_t$ depends on $X_t$ if $\beta_2\neq 0$, so it cannot be stationary.
+\item Yes, because there exists a linear combination of them that is stationary:
+\[
+Y_t-\beta_2X_t=\beta_1 +U_{1,t}.
+\]
+The cointegrating vector is $(1, -\beta_2)$.
+
+
+\item The goal is to find two equations, one with $\Delta Y_t$ on the LHS, and one with $\Delta X_t.$ Both should have the equilibrium error $Y_{t-1}-\beta_1-\beta_2 X_{t-1}$ on the RHS.
+
+For $Y_t$, we find
+\begin{align*}
+Y_t&=\beta_1 +\beta_2 X_t+U_{1,t}&|&-Y_{t-1}\\
+\Delta Y_t&=-Y_{t-1}+\beta_1+\beta_2X_t+U_{1,t}&|&\pm \beta_2 X_{t-1}\\
+\Delta Y_t&=-(Y_{t-1}-\beta_1-\beta_2 X_{t-1})+\beta_2\Delta X_t+U_{1,t}&\\
+\Delta Y_t&=\alpha_1(Y_{t-1}-\beta_1-\beta_2X_{t-1})+\beta_2\Delta X_t+U_{1,t},&\\
+\intertext{where $\alpha_1=-1$. For $X_t$, }
+X_t&=X_{t-1}+U_{2,t}&|&-X_{t-1}\\
+\Delta X_t&=U_{2,t}&&\\
+\Delta X_t&=0(Y_{t-1}-aX_{t-1})+U_{2,t}\\
+\Delta X_t&=\alpha_2(Y_{t-1}-aX_{t-1})+U_{2,t}
+\end{align*}
+where $\alpha_2=0$. This means that we can treat this as a single-equation ECM.
+\end{enumerate}
+\end{enumerate}
+\end{document} 

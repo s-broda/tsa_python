@@ -1,0 +1,52 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{a4wide}
+\usepackage{amsmath, amsfonts, dsfont, booktabs, graphicx, natbib, times, microtype, hyperref}
+\newcommand{\E}{\ensuremath{{\mathbb E}}} % expected value
+\def\func#1{\mathop{\rm #1}}
+\begin{document}
+\title{Solution to Exercise 4}
+\author{Simon A.\ Broda}
+\date{}
+\maketitle
+
+\begin{enumerate}
+\item If we set $\alpha$ and $\beta_1$ to the same value, e.g., 1, then both series trend up by 1 each period. The correlograms look quite similar, but the time series plots don't really, even if we crank up the variance of the trend-stationary series. This is because the latter is stationary after de-trending (subtracting off $\beta_1\cdot t$, whereas the random walk with drift remains nonstationary if we subtract $\alpha\cdot t$ (it becomes a random walk without drift).
+\item See Jupyter notebook.
+\item
+\begin{enumerate}
+
+\item
+For $Y_{1,t}$, we have
+\begin{align*}
+\E[\Delta Y_{1,t}]&=\E[Y_{1,t}-Y_{1,t-1}]\\
+&=\E[\delta t+U_{1,t}-(\delta (t-1)+U_{1,t-1})]\\
+&=\delta +\E[U_{1,t}-U_{1,t-1})]\\
+&=\delta.
+\end{align*}
+For $Y_{2,t}$,
+\begin{align*}
+\E[\Delta Y_{2,t}]&=\E[Y_{2,t}-Y_{2,t-1}]\\
+&=\E[\delta + Y_{2,t-1}+U_{2,t}-Y_{2,t-1}]\\
+&=\E[\delta + U_{2,t}]\\
+&=\delta.
+\end{align*}
+\item Consider the AR(2) process
+\[
+Y_t=\phi_1Y_{t-1}+\phi_2Y_{t-2}+U_t.
+\]
+We would like to test the null that $\phi_1+\phi_2=1$ (unit root) vs.\ $\phi_1+\phi_2<1$ (stationarity). This can be done by rearranging the equation as follows:
+\begin{align*}
+Y_t&=\phi_1Y_{t-1}+\phi_2Y_{t-2}+U_t&\mid&-Y_{t-1}\\
+Y_t-Y_{t-1}&=(\phi_1-1)Y_{t-1}+\phi_2Y_{t-2}+U_t&\mid&\pm \phi_2Y_{t-1}\\
+Y_t-Y_{t-1}&=(\phi_1-1)Y_{t-1}+\phi_2Y_{t-1}-\phi_2Y_{t-1}+\phi_2Y_{t-2}+U_t\qquad&\\
+Y_t-Y_{t-1}&=(\phi_1+\phi_2-1)Y_{t-1}-\phi_2\Delta Y_{t-1}+U_t&\\
+\Delta Y_t&=\psi Y_{t-1}+\alpha_1\Delta Y_{t-1}+U_t,&
+\end{align*}
+where $\psi:=(\phi_1+\phi_2-1)$ and $\alpha_1:=-\phi_2$. Thus testing $\phi_1+\phi_2=1$ vs.\ $\phi_1+\phi_2=<1$ is equivalent to testing $\psi=0$ vs.\ $\psi<0$ in a regression of
+$\Delta Y_t$ onto $Y_{t-1}$, augmented by one lag of $\Delta Y_{t-1}$.
+
+\end{enumerate}
+
+
+\end{enumerate}
+\end{document} 

@@ -1,0 +1,40 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{a4wide}
+\usepackage{amsmath, amsfonts, dsfont, booktabs, graphicx, natbib, times, microtype, hyperref}
+\newcommand{\E}{\ensuremath{{\mathbb E}}} % expected value
+\def\func#1{\mathop{\rm #1}}
+\begin{document}
+\title{Exercise 4}
+\author{Simon A.\ Broda}
+\date{}
+\maketitle
+
+\begin{enumerate}
+\item  Open the file \texttt{simulations.xlsx}. Use the sheets ``AR(1)'' (with $\phi_1$ set to 1) to simulate a random walk with drift, and the sheet ``Linear Trend'' to simulate a trend-stationary process. Play with the parameters and describe your observations.
+\item
+\begin{enumerate}
+\item The file \texttt{tbill.csv} contains monthly data for the 3-month T-Bill rate. Plot them, study the correlogram, and conduct a unit root test.
+\item Model the first difference of the T-Bill rate as an ARMA process, hence modelling the T-Bill rate as an ARIMA process.
+\item Forecast the T-Bill rate for 2022M11 and 2022M12 based on the model you found in the previous question.
+\end{enumerate}
+%\item
+%\begin{enumerate}
+%\item The file \verb+ibm_capm.wf+ contains data for the S\&P500, IBM stock, and the 3-month T-Bill rate. Use it to estimate the CAPM $\beta$ of IBM, by regressing the excess returns of IBM on the excess returns of the market.
+%\item Use the Durbin-Watson test to test for first-order autocorrelation in the residuals.
+%\item Use the Breusch-Pagan test to test for autocorrelation up to order 5 in the residuals.
+%\item Re-estimate the regression using HAC standard errors.
+%\end{enumerate}
+\item
+\begin{enumerate}
+
+\item Show that for both \begin{align*}
+Y_{1,t}&=\delta t+U_{1,t} \quad\mbox{and}\\
+Y_{2,t}&=\delta + Y_{2,t-1}+U_{2,t}.
+\end{align*}
+we have $\E[\Delta Y_{i, t}]=0$.
+\item Derive the ADF regression for an AR(2) process.
+\end{enumerate}
+
+
+\end{enumerate}
+\end{document} 

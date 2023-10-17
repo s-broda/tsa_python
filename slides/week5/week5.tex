@@ -1,0 +1,788 @@
+\input{../preamble.tex}
+\institute{{\Large Volatility Modeling}}
+\begin{document}
+\frame{\titlepage}
+\input{../weeks.tex}
+
+\section{Introduction}\subsection*{bla}
+
+\begin{frame}
+\frametitle{Goal}
+\begin{itemize}
+\item Recall these stylized facts about asset returns:
+\begin{enumerate}
+\item Lack of autocorrelation (efficient market hypothesis)
+\item Volatility clustering
+\item Distribution has heavy tails
+\item Leverage effects
+\end{enumerate}
+\item Goal today: model the last 3 of these, starting with the volatility clustering.
+\end{itemize}
+\end{frame}
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{Volatility}
+
+\begin{itemize}
+\item The \emph{\color{red}volatility} of an investment is a measure of its
+\emph{\color{red}risk}. Usually defined as the standard deviation of the
+return on the investment.
+
+\item Volatility is an important ingredient in:
+
+\begin{itemize}
+\item portfolio selection;
+
+\item risk management;
+
+\item option pricing.
+\end{itemize}
+
+\item Daily financial returns display \emph{\color{red}volatility clustering}%
+: periods of high volatility alternate with more tranquil periods.
+\item In other words: large (in absolute value) returns tend to be
+followed by large (in absolute value) returns.
+
+\item This forms the basis for the \emph{\color{red}%
+autoregressive-conditional heteroskedasticity} model (ARCH; Engle, 1982) and
+the \emph{\color{red}generalized ARCH} model (GARCH; Bollerslev, 1986).
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+\begin{frame}
+\begin{block}{Example: Daily Returns on the S\&P 500}
+\begin{center}
+\begin{tabular}{cc}
+\includegraphics[width=0.9\textwidth]{stylized_facts}
+\end{tabular}
+\end{center}
+\end{block}
+\end{frame}
+\frameit{Reminder: Parameters vs.\ sample values}{
+\item We usually write $\sigma$ for the standard deviation of, e.g., a normally distributed variable.
+\item $\sigma$ is a \er{parameter} and therefore unknown.
+\item The best we can hope for is to \er{estimate} it, usually with the \er{sample standard deviation} $s$.
+\item With stock returns, the standard deviation (or \er{volatility}) changes over time, due to \er{volatility clustering}.
+\item We write $\sigma_t$ for the volatility in period $t$.
+\item Note that $\sigma_t$ is \er{unobserved}. The best we can do is \er{estimate} it. We'll write $\widehat{\sigma}_t$ for this estimate.
+\item Today, we'll mostly discuss different methods of estimation.
+}
+\frameit{Detecting Volatility Clustering (I)}{
+\item Since volatility clustering means that large  returns tend to be followed by large returns, it is possible to detect it by inspecting the correlogram of the squared returns.
+\end{itemize}
+\begin{block}{Example: correlogram of squared S\&P500 returns.}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{sp500corr_sq}
+\end{center}
+\end{block}
+\begin{itemize}
+\item Clearly, there is a lot of predictability in squared returns (unlike returns themselves).
+}
+\frameit{Detecting Volatility Clustering (II)}{
+\item Besides relying on the correlogram (or the associated $Q$-tests, see exercises), a formal test for volatility clustering is Engle's \er{ARCH-LM} test.
+\item The test is designed to work with regression residuals, not raw returns. Hence, we start by regressing the returns on an intercept (this is equivalent to de-meaning the returns).
+\item The ARCH-LM test is based on the auxiliary regression
+\begin{equation*}
+\hat{u}_{t}^{2}=\gamma _{0}+\gamma _{1}\hat{u}_{t-1}^{2}+\ldots +\gamma _{m}%
+\hat{u}_{t-m}^{2}+e_{t}.
+\end{equation*}
+\item The lag length $m$ is chosen by the user, e.g., 5 for daily data.
+\item The test statistic is $T\cdot R^2_{aux}$ and has a $\chi^2(m)$ distribution under  $H_0: \gamma_1=\cdots=\gamma_m=0$ (no volatility clustering).
+}
+\begin{frame}[fragile]
+\begin{block}{Example: ARCH-LM test for the S\&P500 (see exercises for details)}
+\tiny
+\begin{verbatim}
+                                                     OLS Regression Results                            
+                         ==============================================================================
+                         Dep. Variable:                      y   R-squared:                       0.373
+                         Model:                            OLS   Adj. R-squared:                  0.372
+                         Method:                 Least Squares   F-statistic:                     298.0
+                         Date:                Wed, 04 Oct 2023   Prob (F-statistic):          8.83e-251
+                         Time:                        17:19:09   Log-Likelihood:                -7173.1
+                         No. Observations:                2512   AIC:                         1.436e+04
+                         Df Residuals:                    2506   BIC:                         1.439e+04
+                         Df Model:                           5                                         
+                         Covariance Type:            nonrobust                                         
+                         ==============================================================================
+                                          coef    std err          t      P>|t|      [0.025      0.975]
+                         ------------------------------------------------------------------------------
+                         const          0.3179      0.088      3.618      0.000       0.146       0.490
+                         x1             0.2996      0.020     15.157      0.000       0.261       0.338
+                         x2             0.3959      0.021     19.170      0.000       0.355       0.436
+                         x3            -0.0872      0.022     -3.955      0.000      -0.130      -0.044
+                         x4            -0.0139      0.021     -0.671      0.502      -0.054       0.027
+                         x5             0.1438      0.020      7.272      0.000       0.105       0.183
+                         ==============================================================================
+\end{verbatim}
+\small Here, the dependent variable \texttt{y} refers to $\hat{u}^2_t$, the regressor \texttt{x1} refers to $\hat{u}^2_{t-1}$, etc. The test statistic is
+$T\cdot R^2\approx 937$, much larger than the critical value 11.07. The null of no volatility clustering is thus clearly rejected.
+\end{block}
+\end{frame}
+
+\section{Historical, RiskMetrics}\subsection*{}
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{Historical Volatility}
+
+\begin{itemize}
+\item A first simple estimator is \emph{\color{red}historical volatility},
+i.e., the sample standard deviation of the most recent $m$ observations
+(often $m=250$, one year).
+
+\item If $r_{t}=\ln P_t-\ln P_{t-1}$ denotes the daily log-return, then
+\begin{equation*}
+\widehat{\sigma}_{t+1,HIST}^{2}=\frac{1}{m}\sum_{j=0}^{m-1}r_{t-j}^{2}.
+\end{equation*}
+(Typically the average return is relatively close to zero). This is an
+estimate of the squared volatility over day $t+1$, made at the end of day $t$%
+.
+
+\item Main disadvantages:
+
+\begin{itemize}
+\item either noisy (small $m$), or reacts slowly to new information (large $%
+m $);
+
+\item \textquotedblleft ghosting\textquotedblright\ feature: large shock
+leads to higher volatility for exactly $m$ periods, then drops out.
+\end{itemize}
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{RiskMetrics}
+
+\begin{itemize}
+\item Problems with historical volatility are addressed by replacing equally
+weigh\-ted moving average by an \emph{\color{red}exponentially} weighted
+moving average (EWMA), also used in JPMorgan's \emph{\color{red}RiskMetrics}
+system:%
+\begin{eqnarray*}
+\widehat{\sigma}_{t+1,EWMA}^{2}  &=&(1-\lambda )\sum_{j=0}^{\infty }\lambda
+^{j}r_{t-j}^{2} \\
+&=&\lambda\widehat{\sigma}_{t,EWMA}^{2}+(1-\lambda )r_{t}^{2},\qquad 0<\lambda <1.
+\end{eqnarray*}
+\item This means that observations further in the past get a smaller weight.
+
+\item In practice we do not have $r_{t-\infty }$, but the second equation
+can be started up by an initial estimate / guess $\sigma _{0,EWMA}^{2}$.
+\item The larger $\lambda$, the stronger the persistence of shocks (large returns).
+\item For daily data, RiskMetrics recommends $\lambda =0.94$.
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\begin{block}{Example: S\&P500 volatility, historical and EWMA ($\lambda = 0.8,0.94,0.99$)}
+\begin{center}
+\begin{tabular}{cc}
+\includegraphics[width=.6\textwidth]{volaplots}&
+\end{tabular}
+\end{center}
+\end{block}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+\section[ARCH/GARCH]{The ARCH and GARCH Models}\subsection*{}
+%\begin{frame}\frametitle{Conditional Expectation}
+%\begin{itemize}
+%\item We use the notation $E_t[r_{t+1}]$ to denote the \er{conditional expectation} of $r_{t+1}$, given information up to time $t$.
+%\item With this, the AR(1) model $Y_{t}=\mu +\phi Y_{t-1}+u_{t}$ can be formulated as
+%\[
+%E_{t}(Y_{t+1})=\mu +\phi Y_{t}.
+%\]
+%\item We also write $\sigma_{t+1}$ for the conditional volatility:
+%\[
+%\sigma_{t+1}=\sqrt{\text{var}_{t}(r_{t+1})}.
+%\]
+%\item Note that if $E_{t}(r_{t+1})=0$, then $\sigma_{t+1}^2=E_{t}(r_{t+1}^{2})$.
+%\end{itemize}
+%\end{frame}
+
+
+\begin{frame}%
+\frametitle{The ARCH Model}
+\begin{itemize}
+\item The first-order \emph{\color{red}%
+autoregressive-conditional heteroskedasticity} (ARCH(1))  model, due to Engle (1982), for a return $%
+r_{t}$ with mean zero is
+\begin{equation*}
+\sigma^2_{t+1}=\omega +\alpha r_{t}^{2}.
+\end{equation*}
+\item In practice, we need to allow for $\E[r_{t+1}]=\mu _{t+1}\neq 0.$
+Then $r_{t+1}=\mu _{t+1}+u_{t+1}$, and the model becomes
+\begin{equation*}
+\sigma _{t+1}^{2}=\omega +\alpha
+u_{t}^{2}.
+\end{equation*}
+\end{itemize}
+\end{frame}%
+
+\begin{frame}%
+\frametitle{The ARCH Model}
+
+\begin{itemize}
+\item When trying to estimate ARCH models one might find that more lags are
+needed, leading to ARCH($q$):%
+\begin{equation*}
+\sigma _{t+1}^{2}=\omega +\alpha _{1}u_{t}^{2}+\ldots +\alpha
+_{q}u_{t-q+1}^{2}.
+\end{equation*}
+
+\item \emph{Note}: Variances must be positive, therefore we need to impose $%
+\omega >0$, $\alpha _{i}\geq 0$, $i=1,\ldots ,q$.
+\item It can be shown that an ARCH($q$) models corresponds to an AR($q$) for the squared returns. Thus, we could determine the order from the correlogram of the squared returns: SPACF should cut off after $q$ lags.
+\item In the example above, we might conclude that we need an ARCH(6) model.
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{The GARCH Model}
+
+\begin{itemize}
+\item A simpler structure than ARCH($q$) is an ARMA(1,1) for $r_{t}^{2}$ or $%
+u_{t}^{2}$, which leads to the \emph{\color{red}generalized ARCH} model of
+orders (1,1) \linebreak(GARCH(1,1)), due to Bollerslev (1986):
+\begin{equation*}
+\sigma _{t+1}^{2}=\omega +\alpha u_{t}^{2}+\beta \sigma _{t}^{2},\qquad
+\omega >0,\alpha \geq 0,\beta \geq 0.
+\end{equation*}
+
+%\item For $\beta <1$ this is equivalent to an ARCH($\infty $) model
+%\begin{equation*}
+%\sigma _{t+1}^{2}=\frac{\omega }{1-\beta }+\sum_{j=0}^{\infty }\beta
+%^{j}\alpha u_{t-j}^{2}.
+%\end{equation*}
+
+\item \emph{Advantage}: Flexible structure with only 3 parameters
+to estimate.
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{The GARCH Model}
+
+\begin{itemize}
+\item The GARCH(1,1) model is stationary if the unconditional (``average'') variance $%
+\sigma ^{2}=\E[\sigma _{t}^{2}]$ is positive, constant and
+finite.
+
+\item This requires%
+\begin{eqnarray*}
+\sigma ^{2}=\E[\sigma _{t+1}^{2}] &=&\omega +\alpha \E[u_{t}^{2}]+\beta
+\E[\sigma _{t}^{2}] \\
+&=&\omega +\alpha \sigma ^{2}+\beta \sigma ^{2}.
+\end{eqnarray*}
+
+\item Hence, provided that $\alpha +\beta <1$ (the \emph{\color{red}%
+stationarity condition}),%
+\begin{equation*}
+\sigma ^{2}=\frac{\omega }{1-\alpha -\beta }.
+\end{equation*}
+
+\item The nonstationary model with $\alpha +\beta =1$ is called \emph{%
+\color{red}integrated GARCH} (IGARCH): infinite variance, no mean-reversion
+in volatility.
+
+\item Notice that an IGARCH with $r_{t}=u_{t}$, $\omega =0$, $\beta=\lambda$, and $\alpha=(1-\lambda)$ is just the RiskMetrics model.
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{The GARCH Model}
+
+Some other properties:
+
+\begin{itemize}
+\item The ACF and PACF of $r_{t}^{2}$ in case of stationary GARCH(1,1) are
+both exponentially decaying, no cut-off point.
+
+\item The \emph{\color{red}standardized returns}
+\begin{equation*}
+z_{t+1}=\frac{r_{t+1}-\mu _{t+1}}{\sigma _{t+1}}
+\end{equation*}%
+satisfy $E(z_{t+1})=0$ and $\text{var}(z_{t+1})=1$. Therefore the
+model may be formulated as%
+\begin{eqnarray*}
+r_{t+1} &=&\mu _{t+1}+u_{t+1}=\mu _{t+1}+\sigma _{t+1}z_{t+1}, \\
+\sigma _{t+1}^{2} &=&\omega +\alpha u_{t}^{2}+\beta \sigma _{t}^{2}.
+\end{eqnarray*}
+
+\item Often it is assumed that $z_{t}$ are i.i.d. as $N(0,1)$.
+
+\item Even if $z_{t}\sim N(0,1)$, it can be shown that varying $\sigma _{t}$
+implies that $r_{t}$ has non-normal distribution, with higher kurtosis.
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{The GARCH($p$, $q$) Model}
+
+\begin{itemize}
+\item The GARCH(1, 1) model can be extended to the GARCH($p$, $q$) model
+\begin{equation*}
+\sigma _{t+1}^{2}=\omega +\alpha_1 u_{t}^{2}+\cdots+\alpha_q u_{t-q+1}^{2} +\beta_1 \sigma _{t}^{2}+\cdots+\beta_p \sigma _{t-p+1}^{2}
+\end{equation*}
+ although in practice, this is rarely necessary.
+\item The model is stationary if $\sum_{i=1}^p\beta_i+\sum_{i=1}^q\alpha_i<1$, and the unconditional variance is
+\[
+\frac{\omega}{1-\sum_{i=1}^p\beta_i-\sum_{i=1}^q\alpha_i}.
+\]
+
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+\section[Estimation]{Estimation of GARCH Models}\subsection*{}
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{Estimation of GARCH Models}
+
+\begin{itemize}
+\item GARCH cannot be estimated by ordinary least-squares (because
+$\sigma^2_t$ is not observed).
+
+\item Such models are estimated by \emph{\color{red}maximum likelihood}: the
+joint density of the observations $\{r_{1},\ldots ,r_{T}\}$ is maximized
+with respect to the parameters.
+
+\item Maximization of $\log L$ can be done by numerical optimization
+algorithms. By default, the \texttt{arch} package for Python does this under the assumption of normality.
+
+\item If we are not sure that the $z_{t}$'s are normally distributed, then
+we may still use the same estimation technique. This is called \emph{%
+\color{red}quasi-maximum likelihood estimator}.
+
+\item However, we need to construct standard errors via a more robust method
+(\emph{\color{red}Bollerslev-Wooldridge standard errors}). \texttt{arch} does this by default.
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+\begin{frame}[fragile]
+\begin{block}{Example: \texttt{arch} output, estimated GARCH model for S\&P500}
+	\tiny
+\begin{verbatim}
+                                              Constant Mean - GARCH Model Results                      
+                         ==============================================================================
+                         Dep. Variable:             log_return   R-squared:                       0.000
+                         Mean Model:             Constant Mean   Adj. R-squared:                  0.000
+                         Vol Model:                      GARCH   Log-Likelihood:               -3119.24
+                         Distribution:                  Normal   AIC:                           6246.48
+                         Method:            Maximum Likelihood   BIC:                           6269.80
+                         No. Observations:                 2517
+                         Date:                Wed, Oct 04 2023   Df Residuals:                     2516
+                         Time:                        17:23:18   Df Model:                            1
+                         Mean Model                                
+                         ==============================================================================
+                         coef    std err          t      P>|t|    95.0% Conf. Int.
+                         ------------------------------------------------------------------------------
+                         mu             0.0803  1.410e-02      5.697  1.219e-08 [5.269e-02,  0.108]
+                         Volatility Model                              
+                         ==============================================================================
+                                          coef    std err          t      P>|t|      95.0% Conf. Int.
+                         ----------------------------------------------------------------------------
+                         omega          0.0447  9.834e-03      4.551  5.346e-06 [2.548e-02,6.402e-02]
+                         alpha[1]       0.2217  3.185e-02      6.963  3.326e-12     [  0.159,  0.284]
+                         beta[1]        0.7437  2.864e-02     25.970 1.094e-148     [  0.688,  0.800]
+                         ==============================================================================
+
+                         Covariance estimator: robust
+\end{verbatim}
+\end{block}
+\end{frame}
+
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\begin{block}{Example: Estimated GARCH volatility of S\&P500}
+\centerline{\includegraphics[height=1.7in]{sp500sigmas}}
+\end{block}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+\section[Testing]{Testing GARCH\ Models}\subsection*{}
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{Testing GARCH Models}
+
+\begin{itemize}
+\item Diagnostic tests are based on the \emph{\color{red}standardized
+residuals} $\hat{z}_{t}:=\hat{u}_{t}/\hat{\sigma}_{t}$. If $\mu _{t}$ and $%
+\sigma _{t}$ are correctly specified, we should find no autocorrelation in $%
+\hat{z}_{t}$ and $\hat{z}_{t}^{2}$.
+
+\item Therefore, the model can be tested using $Q$-statistics for $\hat{z}%
+_{t}$ or $\hat{z}_{t}^{2}$.
+
+\item Lagrange-Multiplier (LM) test against ARCH, which is obtained by $%
+T\cdot R^{2}$ in the regression%
+\begin{equation*}
+\hat{z}_{t}^{2}=\gamma _{0}+\gamma _{1}\hat{z}_{t-1}^{2}+\ldots +\gamma _{m}%
+\hat{z}_{t-m}^{2}+e_{t}.
+\end{equation*}
+
+\item To test for normality of $z_{t}$, we can use the Jarque-Bera test
+based on the skewness and kurtosis of $\hat{z}_{t}$.
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\begin{block}{Example: Correlogram of standardized residuals for the S\&P500}
+\centerline{\includegraphics[height=1.7in]{corr_resids}}
+\end{block}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\begin{block}{Example: Correlogram of squared standardized residuals for the S\&P500}
+\centerline{\includegraphics[height=1.7in]{corr_resids_sq}}
+\end{block}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\begin{block}{Example: Histogram of standardized residuals for the S\&P500}
+\centerline{\includegraphics[height=1.7in]{hist_resids}}
+The Jarque-Beta test rejects with a $p$-value of essentially zero, rejecting normality (see exercises).
+\end{block}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+
+\section[Asymmetry]{Asymmetry and the News Impact Curve}\subsection*{}
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+
+\begin{frame}%
+%EndExpansion
+
+\frametitle{Asymmetry and the News Impact Curve}
+
+\begin{itemize}
+\item The \emph{\color{red}news impact curve} (NIC) is the effect of $u_{t}$
+on $\sigma _{t+1}^{2}$, keeping $\sigma _{t}^{2}$ and the past fixed.
+
+\item For GARCH(1,1), this is the parabola $NIC(u_{t}|\sigma _{t}^{2}=\sigma
+^{2})=A+\alpha u_{t}^{2}$, with $A=\omega +\beta \sigma ^{2}$. This has a
+minimum at $u_{t}=0$, and is symmetric around that minimum.
+
+\item For equity, a large negative shock is expected to
+increase volatility more than a large positive shock,
+because of \emph{\color{red}leverage effect}:
+\begin{tabbing}
+\hspace{4ex} \= $\downarrow$ \=value of firm's stock \\
+$\Rightarrow$ \> $\downarrow$ \> equity value of the firm \\
+$\Rightarrow$ \> $\uparrow$ \> debt-to-equity ratio \\
+$\Rightarrow$ \> shareholders (as residual claimants) perceive future cashflows\\
+\> as more risky.
+\end{tabbing}
+
+\item Multiple extensions exist to deal with this issue. Here we focus on Glosten, Jagannathan and Runkle's GJR-GARCH model.
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\frametitle{GJR-GARCH (or TARCH, threshold GARCH)}
+
+The GJR-GARCH(1,1) model is%
+\begin{equation*}
+\sigma _{t+1}^{2}=\omega +\alpha u_{t}^{2}+\gamma u_{t}^{2}\text{I}%
+_{t}+\beta \sigma _{t}^{2}.
+\end{equation*}%
+where%
+\begin{equation*}
+\text{I}_{t}=\left\{
+\begin{array}{ccc}
+1 & \text{if} & u_{t}<0 \\
+0 & \text{if} & u_{t}\geq 0%
+\end{array}%
+\right. ,
+\end{equation*}%
+and $u_{t}/\sigma_{t}$ has a symmetric distribution.
+
+Properties:
+
+\begin{itemize}
+\item NIC is asymmetric if and only if $\gamma \neq 0$; leverage effect if $%
+\gamma >0$;
+
+\item $\sigma _{t}^{2}$ is positive if $\omega >0$, $\alpha \geq 0$, $\gamma
+\geq 0$, $\beta \geq 0$;
+
+\item $u_{t}^{2}$ is stationary if $0\leq \alpha +\frac{1}{2}\gamma +\beta
+<1 $, with unconditional variance $\sigma ^{2}=\omega /\left[ 1-\alpha -%
+\frac{1}{2}\gamma -\beta \right] $.
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansiom
+
+
+\begin{frame}[fragile]
+\begin{block}{Example: \texttt{arch} output, estimated TARCH model for S\&P500}
+\tiny
+\begin{verbatim}
+                                            Constant Mean - GJR-GARCH Model Results                    
+                         ==============================================================================
+                         Dep. Variable:             log_return   R-squared:                       0.000
+                         Mean Model:             Constant Mean   Adj. R-squared:                  0.000
+                         Vol Model:                  GJR-GARCH   Log-Likelihood:               -3088.09
+                         Distribution:                  Normal   AIC:                           6186.18
+                         Method:            Maximum Likelihood   BIC:                           6215.34
+                         No. Observations:                 2517
+                         Date:                Wed, Oct 04 2023   Df Residuals:                     2516
+                         Time:                        18:38:45   Df Model:                            1
+                         Mean Model                                 
+                         ==============================================================================
+                         coef    std err          t      P>|t|      95.0% Conf. Int.
+                         ------------------------------------------------------------------------------
+                         mu             0.0475  1.357e-02      3.503  4.609e-04 [2.094e-02,7.415e-02]
+                         Volatility Model                              
+                         ==============================================================================
+                                          coef    std err          t      P>|t|      95.0% Conf. Int.
+                         ----------------------------------------------------------------------------
+                         omega          0.0419  8.680e-03      4.832  1.352e-06 [2.493e-02,5.895e-02]
+                         alpha[1]       0.0831  4.212e-02      1.974  4.843e-02   [5.741e-04,  0.166]
+                         gamma[1]       0.2547  5.416e-02      4.703  2.561e-06     [  0.149,  0.361]
+                         beta[1]        0.7569  3.189e-02     23.736 1.541e-124     [  0.694,  0.819]
+                         ==============================================================================
+
+                         Covariance estimator: robust
+\end{verbatim}
+	
+\end{block}
+
+\end{frame}
+
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}%
+%EndExpansion
+
+\begin{block}{Example: NIC of GARCH and TARCH models for S\&P500}
+\centerline{\includegraphics[height=2.5in]{NIC}}
+\end{block}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+%\section{GARCH-in-Mean}\subsection*{}
+%%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%%BeginExpansion
+%\begin{frame}%
+%%EndExpansion
+%
+%\frametitle{GARCH-in-Mean}
+%
+%\begin{itemize}
+%\item Asset pricing models (CAPM, APT) imply that investors expect a higher
+%return for taking additional risks.
+%
+%\item We can model this by letting the expected return depend on the risk.
+%This leads to
+%\begin{eqnarray*}
+%r_{t+1} &=&\mu +\delta \sigma _{t+1}^{2}+u_{t+1}, \\
+%\sigma _{t+1}^{2} &=&\omega +\alpha u_{t}^{2}+\beta \sigma _{t}^{2}.
+%\end{eqnarray*}%
+%known as \emph{\color{red}GARCH-in-Mean} (GARCH-M) model.
+%
+%\item If $\delta >0,$ then $\uparrow \sigma _{t+1}^{2}\Rightarrow \uparrow
+%E_{t}(r_{t+1})$; thus $\delta $ can be interpreted as a risk premium.
+%\item According to the CAPM, idiosyncratic risk is not priced. Hence this model is useful only for index returns.
+%\item Even for indices, empirical evidence for GARCH-in-mean is typically weak.
+%\end{itemize}
+%
+%%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%%BeginExpansion
+%\end{frame}%
+%%EndExpansion
+\section[Forecasting]{Volatility Forecasting}\subsection*{}
+%TCIMACRO{\TeXButton{BeginFrame}{\begin{frame}}}%
+%BeginExpansion
+\begin{frame}
+%EndExpansion
+
+\frametitle{Volatility Forecasting}
+
+\begin{itemize}
+\item GARCH models directly provide forecasts of next day's volatility:
+\[
+\widehat{\sigma} _{t+1}^{2}=\hat{\omega}+\hat{\alpha}\hat{u}_{t}^{2}+\hat{\beta} \widehat{\sigma} _{t}^{2}.
+\]
+
+%\item This can also be
+%expressed as
+%\[
+%\widehat{\sigma} _{t+1}^{2}=\widehat{\sigma}^2+\hat{\alpha}(\hat{u}_{t}^{2}-\widehat{\sigma}^2)+\hat{\beta} (\widehat{\sigma} _{t}^{2}-\widehat{\sigma}^2).
+%\]
+%with $\widehat{\sigma}^2=\hat{\omega} /(1-\hat\alpha -\hat\beta )$; see the exercises.
+%
+%\item So the forecast differs from
+%the average variance $\widehat{\sigma} ^{2}$ if $\hat{u}_{t}^{2}$ or $\widehat{\sigma}
+%_{t}^{2}$ differ from $\widehat{\sigma} ^{2}$.
+\item Multi-period forecasts can be constructed recursively. In principle, one would use
+\[
+\widehat{\sigma} _{t+2}^{2}=\hat{\omega}+\hat{\alpha}\hat{u}_{t+1}^{2}+\hat{\beta} \widehat{\sigma} _{t+1}^{2},
+\]
+but $\hat{u}_{t+1}^{2}$ is unobserved.
+\item Solution: replace $\hat{u}_{t+1}^{2}$ with its estimate, $\widehat{\sigma} _{t+1}^{2}$.
+\item Result:
+\[
+\widehat{\sigma} _{t+2}^{2}=\hat{\omega}+\left(\hat{\alpha}+\hat{\beta}\right) \widehat{\sigma} _{t+1}^{2}.
+\] 
+\end{itemize}
+
+%TCIMACRO{\TeXButton{EndFrame}{\end{frame}}}%
+%BeginExpansion
+\end{frame}%
+%EndExpansion
+%\frameit{Multi-Period Forecasts}{
+%\item Regarding multi-period forecasts of the stationary GARCH(1, 1) model, it can be shown that
+%\[
+%\widehat{\sigma} _{t+s}^{2}=\widehat{\sigma} ^{2}+(\hat\alpha+\hat\beta)^{s-1} (\widehat{\sigma}_{t+1}^{2}-\widehat{\sigma} ^{2}),
+%\]
+%see the exercises.
+%\item This implies $\widehat{\sigma} _{t+s}^{2}\rightarrow \widehat{\sigma} ^{2}$ as $%
+%s\rightarrow \infty $.
+%
+%\item For RiskMetrics ($\alpha +\beta =1$, $\omega =0$), this simplifies to $\widehat{\sigma} _{t+s}^{2}=\widehat{\sigma}_{t+1}^{2}$ for
+%all $s$.
+%}
+\section{Epilogue}\subsection*{bla}
+\begin{frame}\frametitle{Learning Goals}
+Students
+\begin{itemize}
+\item can use appropriate tests to detect volatility clustering,
+\item are able to estimate, interpret, and forecast the various models (historical volatility, RiskMetrics, (G)ARCH, TARCH),
+and to apply diagnostic tests to the standardized residuals,
+\item and understand the concept of leverage, and the NIC.
+
+\end{itemize}
+
+\end{frame}
+
+\frameit{Homework}{
+\item Exercise 5
+\item Questions 1 and 3 from Chapter 9 of Brooks (2019)
+}
+
+
+\end{document}

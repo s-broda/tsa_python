@@ -1,0 +1,655 @@
+\input{../preamble.tex}
+\institute{{\Large ARMA Models}}
+\begin{document}
+\frame{\titlepage}
+\input{../weeks.tex}
+
+\section{AR Processes}\subsection*{bla}
+\frameit{White Noise and Random Walk}{
+\item Last week, we encountered two important stochastic processes: the \er{white noise} process
+\begin{align*}
+Y_t=U_t,\\
+\intertext{and the \er{random walk} process}
+Y_t=Y_{t-1}+ U_t.
+\end{align*}
+\item Observe that we can unify the notation by writing
+\[
+Y_t=\phi_1 Y_{t-1}+ U_t,
+\]
+where $\phi_1=0$ produces white noise, and $\phi_1=1$ results in the random walk.
+}
+\begin{frame}{The AR(1) Process}
+\begin{itemize}
+\item In fact, there is no reason to restrict the parameter $\phi_1$ to just these two values
+\item Allowing arbitrary values results in the \er{autoregressive model of order 1}, or \er{AR(1)} model.
+\item Usually, an intercept is also addded. The full model is then
+\begin{equation*}
+Y_t=\alpha +\phi_1 Y_{t-1}+ U_t, \quad  \text{with $U_t$ white noise.}
+\end{equation*}
+\item We will see soon that the model is stationary if and only if $-1<\phi_1 <1$.
+\item The AR(1) process is a member of a very powerful class of models, the \emph{\color{red}%
+autoregressive-moving average} (\er{ARMA}) models, with its special cases
+\emph{\color{red}autoregressive} (\er{AR}) and \emph{\color{red}moving average} (\er{MA}) models.
+
+\item Goal: find the right model (for forecasting etc.) by matching the correlogram.
+\end{itemize}
+\end{frame}
+\begin{frame}{Mean  of Stationary AR(1)}
+\begin{itemize}
+
+\item A first intuition for the \er{stationarity condition} is obtained if we try to
+find the (constant) mean and variance of $Y_t$.
+ The mean of $Y_t$ is to be solved from
+\begin{equation*}
+\E[Y_t] = \alpha + \phi_1 \E[Y_{t-1}] + \E[U_t] = \alpha + \phi_1 \E[Y_{t}],
+\end{equation*}
+which implies
+\begin{equation*}
+\E[Y_t] = \frac{\alpha}{1-\phi_1},
+\end{equation*}
+and this requires $\phi_1 \ne 1$.
+\end{itemize}
+\end{frame}
+\begin{frame}{Variance of Stationary AR(1)}
+\begin{itemize}
+\item Next, because $\{U_t\}$ is white noise, $U_t$  is uncorrelated with $Y_{t-1}$, so
+\begin{equation*}
+\mathrm{var}(Y_t) = \phi_1^2 \mathrm{var}(Y_{t-1}) + \mathrm{var}(U_t) + 2
+\phi_1 \mathrm{cov}(Y_{t-1},U_{t}) = \phi_1^2 \mathrm{var}(Y_{t}) +
+\sigma^2,
+\end{equation*}
+so that, if and only if $|\phi_1 |<1$,
+\begin{equation*}
+\mathrm{var}(Y_t) = \frac{\sigma^2}{1-\phi_1^2}.
+\end{equation*}
+
+\item Note that $\mathrm{var}(Y_t) > \mathrm{var}(Y_{t-1})$ if $|\phi_1 |\ge 1$, i.e., the variance grows without bounds in that case.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{ACF / PACF of Stationary AR(1)}
+\begin{itemize}
+\item It can be shown (see optional exercise) that if $|\phi_1|<1$, then
+\begin{equation*}
+\tau_k = \frac{\gamma_k}{\gamma_0} = \phi_1 ^k,
+\end{equation*}
+i.e., if the process is stationary, then the ACF decays exponentially (or \er{geometrically}).
+\item The PACF satisfies
+\[
+\tau_{11} = \phi_1 \quad\mbox{and}\quad \tau_{kk} = 0, k>1;
+\]
+i.e., it drops to zero after the first lag.
+\end{itemize}
+\end{frame}
+\begin{frame}{Summary: Moments of AR(1)}
+\begin{itemize}
+
+\item In summary, we have
+obtained the following properties for the stationary AR(1) process:
+\begin{block}{Properties of AR(1)}
+\begin{itemize}
+\item $\E(Y_t) =\dfrac \alpha {1-\phi_1 }$;
+
+\item $\mathrm{var}(Y_t) = \dfrac{\sigma ^2}{1-\phi_1 ^2}$;
+
+\item $\tau _k =\phi_1 ^k,\quad k=1,2,\ldots$;
+
+\item $\tau _{kk} =\left\{
+\begin{array}{c}
+\phi_1 ,\quad k=1, \\
+0,\quad k>1.
+\end{array}
+\right. $
+\end{itemize}
+\end{block}
+\item Hence, if we find a geometrically declining acf, but a pacf which suddenly
+cuts off when $k>1$, then we seem to have an AR(1) process.
+\item Try playing with this in the sheet ``AR(1)`` in \texttt{simulation.xlsx}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Random Walk}
+The AR(1) process is non-stationary if:
+\begin{itemize}
+\item $\phi_1 =1$:
+\begin{itemize}
+
+ \item now $Y_t=\alpha +Y_{t-1}+ U_t$: a \emph{%
+\color{red} random walk with drift}. It satisfies
+\begin{eqnarray*}
+\E[Y_t]&=&Y_0+\alpha t, \\
+\mathrm{var}(Y_t)&=&\sigma ^2t, \\
+\mathrm{corr}(Y_t,Y_{t-k})&=&\sqrt{(t-k)/t}.
+\end{eqnarray*}
+\item Like for a random walk without drift, the correlogram typically stays close to 1, and decreases slowly,
+approximately linearly, while the first difference $\Delta Y_t$ is stationary (see exercises).
+\end{itemize}
+\item $\phi_1 >1$: this is a so-called \emph{\color{red}explosive} process.
+The mean and variance increase very fast (exponentially). We usually do not
+consider this because it is unrealistic (at least for long periods of time).
+\end{itemize}
+
+\end{frame}
+\begin{frame}{AR(p) Models}
+\begin{itemize}
+\item To fit more complicated ACF patterns, the AR(1) model can be extended to the \er{AR($p$)} model if necessary:
+\begin{equation*}
+Y_t=\alpha +\phi _1Y_{t-1}+\phi _2Y_{t-2}+\ldots +\phi _pY_{t-p}+ U_t.
+\end{equation*}
+\item A \emph{necessary} (but not sufficient) \er{condition for stationarity} is
+\begin{equation*}
+\phi _1+\phi _2+\ldots +\phi _p<1 .
+\end{equation*}
+\item If the model is stationary, then the mean is $\E[Y_t] = \alpha/(1-\sum_{i=1}^p \phi_i)$.
+\item The ACF should gradually approach zero, but not necessarily with a
+clear pattern.
+\item The PACF satisfies
+\begin{equation*}
+\tau _{kk}=0,\quad k>p.
+\end{equation*}
+
+\item Because all autoregressive models are basically regressions (with lagged
+variables as regressors), they can simply be estimated by ordinary
+least-squares as usual.
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Example}
+Is the AR(2) process
+\[
+Y_t= .5Y_{t-1}+.5Y_{t-2}+U_t
+\]
+stationary?
+\end{frame}
+\section{MA and ARMA Processes}\subsection*{bla}
+\begin{frame}{The MA(1) Model}
+\begin{itemize}
+\item The first-order \emph{\color{red}moving average model} --- MA(1) --- is given by
+\begin{equation*}
+Y_t=\alpha + U_t + \theta_1 U_{t-1},
+\end{equation*}
+where $\{U_t\}$ is again a white noise process.
+\item This process is stationary for
+all values of $\theta_1 $. It can be shown that
+\begin{eqnarray*}
+\E[Y_t] &=& \alpha, \\
+\mathrm{var}(Y_t) &=& \sigma ^2 (1 + \theta_1 ^2), \\
+\tau_1 = \mathrm{corr}(Y_t,Y_{t-1}) & = & \theta_1/(1 + \theta_1 ^2).
+\end{eqnarray*}
+\end{itemize}
+\end{frame}
+\begin{frame}{ACF and PACF of the MA(1) Model}
+\begin{itemize}
+\item The most important property is that, for all $k>1$,
+\begin{equation*}
+\tau_k = \mathrm{corr}(Y_t,Y_{t-k})=0,
+\end{equation*}
+i.e., the ACF has a \emph{\color{red}cut-off point}; shocks that happened longer than 1 period ago have no
+effect on $Y_t$.
+\item Also, the PACF of an MA(1) process is $\tau_{kk} =
+-(-\theta_1)^k\rightarrow\;\;$\emph{\color{red}geometric decay}.
+\item Note that the patterns of the ACF and PACF are \er{reversed} compared to the AR(1) process!
+\item We will use this to \er{identify} the correct model from the SACF/SPACF.
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{MA($q$) process}
+\begin{itemize}
+\item
+Again we may generalize to the MA($q$) model
+\begin{equation*}
+Y_t=\alpha + U_t + \theta _1 U_{t-1} + \ldots + \theta _q U_{t-q} .
+\end{equation*}
+\item Now $\tau _k=0$ for $k>q$, and $\tau_{kk}$ still decays exponentially.
+\item This will again be used to identify the correct model from the correlogram.
+\end{itemize}
+\end{frame}
+\frameit{Some more properties of MA($q$) Models }{
+\item \er{Estimation}: since the past values of $U_{t}$ are unobserved, we cannot estimate the coefficient $\theta_1 $ by OLS.
+Python can still estimate the model, based on other methods.
+\item \er{Stationarity}: All MA($q$) processes are stationary, regardless of their parameter values.
+}
+
+\begin{frame}{ARMA(1, 1) Process}
+\begin{itemize}
+\item
+The most general class of processes is the mixed autoregressive-moving
+average (\er{ARMA}) class of models.
+\item The simplest one is the ARMA(1,1):
+\begin{equation*}
+Y_t= \phi_1 Y_{t-1}+ U_t + \theta_1 U_{t-1}.
+\end{equation*}
+\item The model is stationary if $|\phi_1 |<1$.% and invertible if $|\theta_1 |<1$.
+\item The ACF turns out to be
+\begin{eqnarray*}
+\tau _1 &=&\frac{(1 + \phi_1 \theta_1 )(\phi_1 + \theta_1 )}{1+\theta_1
+^2+2\phi_1 \theta_1 }, \\
+\tau _k &=&\phi_1 ^{k-1}\tau _1,\quad k>1 \rightarrow\text{\er{geometric decay}}.
+\end{eqnarray*}
+\item The PACF is also gradually declining (no cut-off point).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{ARMA(p, q) Process}
+\begin{itemize}
+\item The general ARMA(p, q) model is
+\begin{equation*}
+Y_t= \alpha+\phi_1 Y_{t-1}+\ldots+\phi_p Y_{t-p}  U_t + \theta_1 U_{t-1} + \ldots+\theta_q U_{t-q}.
+\end{equation*}
+\item Like for the ARMA(1, 1), both its ACF and PACF decay exponentially (provided it is stationary), without a clear pattern.
+\item \er{Estimation}: Like pure MA models, ARMA models cannot be estimated by OLS because the past values of $U_{t}$ are unobserved. There are other ways of estimating them though.
+\item \er{Stationarity}: The stationarity or otherwise of an ARMA process depends only on the AR component, i.e., a necessary condition is that
+\begin{equation*}
+\phi _1+\phi _2+\ldots +\phi _p<1 .
+\end{equation*}
+\end{itemize}
+\end{frame}
+\begin{frame}{A Theorem}
+\begin{itemize}
+\item The following theorem explains why ARMA processes are so important:
+\begin{block}{Theorem}
+\emph{\color{red}Any} stationary process can be represented as an ARMA process.
+\end{block}
+\item So as long as we can find the right model, we can predict \er{any} stationary process\footnote{And even integrated processes, by taking the first difference and modelling that.}!
+\item The properties of the ACF and PACF, summarized on the next slide, will help us do this.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Summary of Properties}
+\begin{itemize}
+\item We have found the following properties of the different processes:
+\begin{itemize}
+\item AR($p$): geometrically decaying ACF, PACF is zero after $p$ lags;
+
+\item MA($q$): ACF is zero after $q$ lags, geometrically decaying PACF;
+
+\item ARMA($p, q$): geometrically decaying ACF and PACF.
+\end{itemize}
+\item So we can infer the model type and order from the SACF/SPACF for pure AR and MA models.
+\item A full ARMA model would be required if both SACF and PACF decline geometrically, but we won't be able to infer the orders then.
+\item The usual procedure is to try an  ARMA(1,1) in that case, and test whether the model needs to be extended.
+\item The above is called the \er{Box-Jenkins} approach.
+\end{itemize}
+\end{frame}
+
+\section{Box-Jenkins Approach}\subsection*{bla}
+\begin{frame}{Box-Jenkins}
+\begin{itemize}
+\item In their 1970 textbook, Box and Jenkins proposed an approach to empirical
+ARMA modelling that soon became and still is the predominant approach to
+univariate time-series analysis and forecasting. Their procedure consists of
+three steps:
+
+\begin{enumerate}
+\item \textbf{\color{blue}Identification}. This refers to the problem of
+selecting an initial ARMA model, i.e., the choice of the orders $p$
+and $q$. This is based on inspection of the
+graph and the correlogram of $Y_{t}$. Also,
+so-called \emph{\color{red}information criteria} may be used for model
+selection.
+
+\item \textbf{\color{blue}Estimation}. The unknown autoregressive and moving
+average parameters, as well as the variance $\sigma ^{2}$ of the
+disturbances, need to be estimated.
+
+\item \textbf{\color{blue}Diagnostic checking}. A correctly specified model
+should not display any autocorrelation in the residuals. Therefore, the main
+model check is a test for residual autocorrelation. Also other
+misspecification tests (heteroskedasticity, normality, structural change)
+may be used.
+\end{enumerate}
+
+\item If we find some problem with the model in Step 3, then we return to
+Step 1 and go through the cycle again, until the tests indicate no further
+problem.
+\end{itemize}
+\end{frame}
+\begin{frame}{Identification: Stationarity}
+\begin{itemize}
+\item Before even choosing $p$ and $q$, it must be ensured that the data are \er{stationary}. An integrated time series displays
+very large autocorrelations, which converge to zero only slowly. In
+contrast, stationary time series have an autocorrelation function that
+decays exponentially, or is not significantly different from zero after a
+few lags.
+
+\item Additional information is available from the graph of the time series.
+Stationary time series should display \er{mean-reversion}, i.e., they should
+fluctuate around a constant mean (or a linear trend, in case of
+trend-stationarity). If a series does not display this property, and behaves
+more like a random walk, then it may not be stationary.
+
+\item A formal procedure to test this (and how to proceed in case of non-stationarity) will be introduced later.
+\end{itemize}
+\end{frame}
+\begin{frame}{Identification: $p$ and $q$}
+\begin{itemize}
+\item The second step is choosing $p$ and $q$.
+\item Recall that the correlograms of AR, MA and ARMA processes are characterized thusly:
+
+\begin{itemize}
+\item AR($p$): geometrically decaying ACF, PACF is zero after $p$ lags;
+
+\item MA($q$): ACF is zero after $q$ lags, geometrically decaying PACF;
+
+\item ARMA($p, q$): geometrically decaying ACF and PACF.
+\end{itemize}
+
+\item If neither ACF nor PACF have a clear cut-off point,
+start with an ARMA(1,1), estimate it, and test whether the model
+needs to be extended.
+\item General goal: \emph{\color{red} parsimony}. Find the smallest possible model that describes the data well.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Estimation}
+\begin{itemize}
+\item See exercises.
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Diagnostic Testing}
+\begin{itemize}
+\item
+After estimating our favorite ARMA model, we obtain the \er{residuals} $\hat{u}%
+_{t}$. These residuals should look like
+\er{white noise}.
+\item If there is significant
+autocorrelation left in $\hat{u}_{t}$, we should
+\er{extend} the model. E.g.,, if the residuals of an
+AR(1) model look like an MA(1) process, then we might try an ARMA(1,1) model
+instead.
+\item The most often used test for residual autocorrelation in ARMA models is the
+Ljung-Box $Q$-statistic, based on the residuals $\hat{u}_{t}$ instead of the
+original time series $y_{t}$.
+\item It can be shown that if $\hat{u}_{t}$ is a
+residual from an ARMA($p,q$) model, then the $Q$-statistic with $m$
+correlations has an approximate $\chi _{m-p-q}^{2}$ distribution under the
+null hypothesis. This means that we cannot get $p$-values for the 
+first $(p+q)$ $Q$-statistics (see exercises).
+
+\item The tests cannot reliably be used to
+find out in which direction the model should be \er{extended}. This means
+that we may have to try different alternative specifications before we find
+a satisfactory choice.
+\end{itemize}
+\end{frame}
+\begin{frame}{Model Selection Criteria}
+\begin{itemize}
+
+\item If more than one specification
+passes the diagnostic tests (e.g., both an AR(2) and an ARMA(1,1)), then the decision is often based on the
+ \emph{\color{red}Akaike
+information criterion} (AIC) and the \emph{\color{red}Schwarz criterion}
+(SC; a.k.a.\ the \er{Bayesian} information criterion, BIC):
+\begin{eqnarray*}
+AIC &=&1+\log 2\pi +\log \left( \frac{1}{n}\sum_{t=1}^{n}\hat{u}%
+_{t}^{2}\right) +\frac{2k}{T}, \\
+SC &=&1+\log 2\pi +\log \left( \frac{1}{n}\sum_{t=1}^{n}\hat{u}_{t}^{2}\right)
++\frac{k\log T}{T}.
+\end{eqnarray*}%
+\item $k=$ number of parameters  ($p+q+2$ including intercept and $\sigma^2_u$).
+\item Constant $1+\log 2\pi $ is irrelevant in comparisons and sometimes
+deleted.
+\item We choose the model with the smallest AIC or SC. Typically AIC
+leads to higher $p$ and $q$ than SC.
+\item The idea is similar to the adjusted $R^2$: the second term is a penalty for including too many parameters. Trade-off between \emph{\color{red}%
+goodness of fit} and \emph{\color{red}parsimony}. Smaller models are often better for forecasting.
+%Two simple criteria that make this trade-off explicit are the adjusted $%
+%R^{2} $ and the residual variance $s^{2}$:%
+%\begin{equation*}
+%\bar{R}^{2}=1-\frac{\sum_{t=1}^{T}\hat{u}_{t}^{2}/(T-k)}{%
+%\sum_{t=1}^{T}(Y_{t}-\bar{Y})^{2}/(T-1)},\qquad s^{2}=\frac{1}{T-k}%
+%\sum_{t=1}^{T}\hat{u}_{t}^{2},
+%\end{equation*}%
+%where $k=p+q+1$ is the total number of parameters (excluding $\sigma ^{2}$%
+%).\newpage
+\end{itemize}
+\end{frame}
+\section{Forecasting}\subsection*{bla}
+%\begin{frame}{Forecasting Terminology}
+%\begin{itemize}
+%\item The main purpose of ARIMA models is forecasting.
+%\item Denote the forecast of $y_{t+s}$ based on information available at time $t$ as
+%$f_{t,s}$.
+%
+%%\item The (conditional) forecast error variance is $E\left[
+%%(y_{t+s}-f_{t,s})^{2}|\mathcal{F} _{t}\right] =\limfunc{var}(y_{t+s}|\mathcal{F} _{t})$%
+%%. Usually the expression for this variance does not depend on $\mathcal{F} _{t}$,
+%%and therefore is equal to $E\left[ (y_{t+s}-f_{t,s})^{2}\right] $.\newpage
+%
+%%\item For ARMA models, the one-step-ahead forecast follows from the AR($\infty $)
+%%representation:%
+%%\begin{equation*}
+%%_{t,1}=E(y_{t+1}|\mathcal{F} _{t})=\sum_{i=1}^{\infty }\pi _{i}y_{t+1-i},
+%%\end{equation*}%
+%%and the forecast error variance is $\limfunc{var}(y_{t+1}|\mathcal{F}
+%%_{t})=\sigma ^{2}$.
+%
+%%\item Multi-step forecasts may be defined recursively, so that $f_{t,2}$ is
+%%based on $f_{t,1}$ and $\mathcal{F} _{t}$, and so on. The multi-step forecast
+%%error variance may be derived from the MA($\infty $) representation.
+%
+%%To see how a particular ARIMA model leads to a particular forecast, consider
+%%the ARIMA(0,1,1) model%
+%%\begin{equation*}
+%%\Delta y_{t}=u_{t}+\theta _{1}u_{t-1}.
+%%\end{equation*}%
+%%Given that $u_{t}=y_{t}-E(y_{t}|\mathcal{F} _{t-1})=y_{t}-f_{t-1,1}$, it follows
+%%that%
+%%\begin{eqnarray*}
+%%E(\Delta y_{t+1}|\mathcal{F} _{t}) &=&E(u_{t+1}|\mathcal{F}
+%%_{t})+\theta _{1}E(u_{t}|\mathcal{F} _{t}) \\
+%%&=&0+\theta _{1}(y_{t}-f_{t-1,1}),
+%%\end{eqnarray*}%
+%%which implies%
+%%\begin{equation*}
+%%f_{t,1}=y_{t}+E(\Delta y_{t+1}|\mathcal{F} _{t})=(1+\theta _{1})y_{t}-\theta _{1}f_{t-1,1}.
+%%\end{equation*}%
+%%This forecast corresponds to \emph{\color{red}adaptive expectations}, and
+%%also to \emph{\color{red}exponential smoothing}. Defining $S_{t}=f_{t,0}$
+%%and $\alpha =(1+\theta _{1}) $, it follows that%
+%%\begin{equation*}
+%%S_{t}=\alpha y_{t}+(1-\alpha )S_{t-1}.
+%%\end{equation*}%
+%%Here $S_{t}$ is interpreted as a smoothed version of $y_{t}$. This is used,
+%%e.g., in RiskMetrics.
+%%
+%%
+%%\newpage
+%
+%
+%
+%%Above we listed the main ingredients in forecasting based on ARIMA
+%%models. Next we consider some of these ingredients in more detail for
+%%the AR(1) model and the random walk.
+%\item We distinguish \emph{\color{red}in-sample} and \emph{%
+%\color{red}out-of-sample} forecasts.
+%\item In-sample means that the same data are forecasted that were used for estimating the model.
+%\item Out-of sample forecasting means that the sample is divided into two subsamples, say $1,\ldots,T_1$ (the \emph{\color{red}estimation period}\,) and $T_1+1,\ldots,T$ (the \emph{\color{red}holdout period}\,). The former is used for selecting a model and
+%estimating its parameters. Based on this information at time $T_1$, we forecast $%
+%y_{T_1+1},\ldots ,y_{T}$.
+
+%\item Alternatively, one may roll the estimation window forward after the first forecast. This way, one always uses the most recent information set $\mathcal{F}_t$ for forecasting $y_t+1$. This is the most relevant for taking a model for a test drive.
+
+
+%\end{itemize}\end{frame}
+%
+%Consider again the AR(1) model with constant term,%
+%\begin{equation*}
+%y_{t}=\mu +\phi y_{t-1}+u_{t},
+%\end{equation*}%
+%where we assume that the stationarity condition $\left\vert \phi \right\vert
+%<1$ is satisfied.
+%
+%The one-step forecast of $y_{t+1}=\mu +\phi y_{t}+u_{t+1}$ is%
+%\begin{eqnarray*}
+%f_{t,1} &=&E(y_{t+1}|\mathcal{F} _{t}) \\
+%&=&\mu +\phi E(y_{t}|\mathcal{F} _{t})+E(u_{t+1}|\mathcal{F} _{t}) \\
+%&=&\mu +\phi y_{t},
+%\end{eqnarray*}%
+%and the one-step forecast variance is%
+%\begin{eqnarray*}
+%\sigma _{t,1}^{2} &=&\limfunc{var}\left( y_{t+1}-f_{t,1}|\mathcal{F} _{t}\right)
+%\\
+%&=&\limfunc{var}(u_{t+1}|\mathcal{F} _{t}) \\
+%&=&\sigma ^{2}.
+%\end{eqnarray*}%
+%\newpage
+%
+%For $s=2$, we find%
+%\begin{eqnarray*}
+%f_{t,2} &=&\mu +\phi E(y_{t+1}|\mathcal{F} _{t})+E(u_{t+2}|\mathcal{F} _{t}) \\
+%&=&\mu +\phi f_{t,1} \\
+%&=&\phi ^{2}y_{t}+\mu (1+\phi ).
+%\end{eqnarray*}%
+%Therefore, the two-step forecast error may be written as%
+%\begin{eqnarray*}
+%y_{t+2}-f_{t,2} &=&\mu +\phi y_{t+1}+u_{t+2}-\mu -\phi f_{t,1} \\
+%&=&\phi (y_{t+1}-f_{t,1})+u_{t+2}
+%\end{eqnarray*}%
+%with variance%
+%\begin{eqnarray*}
+%\sigma _{t,2}^{2} &=&\limfunc{var}(y_{t+2}-f_{t,2}|\mathcal{F} _{t}) \\
+%&=&\phi ^{2}\sigma _{t}^{2}+\sigma ^{2} \\
+%&=&\sigma ^{2}(1+\phi ^{2}).
+%\end{eqnarray*}%
+%\newpage
+%
+%Continuing in the same way, it follows that%
+%\begin{eqnarray*}
+%f_{t,s} &=&\mu +\phi f_{t,s-1}=\phi ^{s}y_{t}+\mu (1+\phi +\ldots +\phi
+%^{s-1}), \\
+%\sigma _{t,s}^{2} &=&\sigma ^{2}+\phi ^{2}\sigma _{t,s-1}^{2}=\sigma
+%^{2}(1+\phi ^{2}+\ldots +\phi ^{2(s-1)}).
+%\end{eqnarray*}%
+%As $s$ increases, we see that
+%\begin{eqnarray*}
+%f_{t,s} &\rightarrow &\frac{\mu }{1-\phi }=E(y_{t}), \\
+%\sigma _{t,s}^{2} &\rightarrow &\frac{\sigma ^{2}}{1-\phi ^{2}}=\limfunc{var}%
+%(y_{t}).
+%\end{eqnarray*}
+%
+%In other words, the long-run forecast of a stationary AR(1) model is just
+%the unconditional mean, and the long-run forecast variance is the
+%unconditional variance of $y_{t}$. This is a property of all stationary ARMA
+%models, not only the AR(1).\newpage
+%
+%When $\phi =1$, so that $y_{t}$ is a random walk (with drift)
+%and the stationarity
+%condition is violated, these properties clearly change. We now have%
+%\begin{eqnarray*}
+%f_{t,s} &=&\phi ^{s}y_{t}+\mu (1+\phi +\ldots +\phi ^{s-1}) \\
+%&=&y_{t}+\mu s.
+%\end{eqnarray*}%
+%Thus the multi-step forecast is linearly increasing if the drift $\mu $ is
+%non-zero, or constant if the drift is zero. For the forecast variance, we
+%find%
+%\begin{eqnarray*}
+%\sigma _{t,s}^{2} &=&\sigma ^{2}(1+\phi ^{2}+\ldots +\phi ^{2(s-1)}) \\
+%&=&\sigma ^{2}s,
+%\end{eqnarray*}%
+%which is therefore also linearly increasing. This means that the width of
+%the forecast interval $f_{t,s}\pm 2\sigma _{t,s}$ will keep on increasing as
+%$s$ increases. This is a property of all integrated processes, not only the
+%random walk.\newpage
+\begin{frame}{One-Step Ahead Forecasts}
+\begin{itemize}
+\item Suppose we want to produce forecasts for the ARMA(1, 1) model
+\[
+Y_{t+1}=\alpha +\phi _{1}Y_{t}+U_{t+1}+\theta_{1}U_{t}.
+\]
+\item Strategy: replace parameters with estimates, errors $U_t$ with residuals $\hat{u}_t$, and unobserved future $U_t$ with zero. Hence
+\[
+\widehat{Y}_{t+1}=\hat\alpha +\hat{\phi }_{1}y_{t}+0+\theta_{1}\hat{u}_{t}.
+\]
+\item Analogous procedure for general ARMA($p$, $q$) models.
+\end{itemize}
+\end{frame}
+\begin{frame}{Multi-Step Forecasts}
+\begin{itemize}
+\item When forecasting multiple steps ahead, not only the future $U_t$ are unknown, but also the future $y_t$.
+\item Solution: recursive procedure. Forecast $y_{t+1}$ first, then use this to forecast $y_{t+2}$, etc. All future errors are replaced with zero.
+%Mathematically,
+%\begin{equation*}
+%f_{t,s}=\mu +\phi _{1}f_{t,s-1}+\ldots +\phi _{p}f_{t,s-p}+\theta
+%_{1}E(u_{t+s-1}|\mathcal{F} _{t})+\ldots +\theta _{q}E(u_{t+s-q}|\mathcal{F} _{t}),
+%\end{equation*}%
+%where%
+%\begin{align*}
+%f_{t,s-j}&=\left\{
+%\begin{array}{ccc}
+%E(y_{t+s-j}|\mathcal{F} _{t}), & \text{if} & j<s, \\
+%y_{t+s-j} & \text{if} & j\geq s,%
+%\end{array}%
+%\right. \intertext{and} E(u_{t+s-j}|\mathcal{F} _{t})&=\left\{
+%\begin{array}{ccc}
+%0, & \text{if} & j<s, \\
+%u_{t+s-j}, & \text{if} & j\geq s.%
+%\end{array}%
+%\right.
+%\end{align*}
+%\item For integrated processes, the procedure is to first obtain forecasts
+%for $\Delta y_{t+s}$, which is stationary, and then use%
+%\begin{equation*}
+%E(y_{t+s}|\mathcal{F} _{t})=y_{t}+E(\Delta y_{t+1}|\mathcal{F} _{t})+\ldots +E(\Delta
+%y_{t+s}|\mathcal{F} _{t}).
+%\end{equation*}%
+%Thus the forecasts of $\Delta y_{t+i}$ are accumulated. %Similarly, the
+%%forecast errors $\Delta y_{t+i}-\Delta f_{t,i}$ are accumulated, which leads
+%%to an expression for the forecast error variance.\newpage
+\end{itemize}
+\end{frame}
+
+%\begin{frame}{Remarks}
+%\begin{itemize}
+%
+%
+%\item EViews distinguishes between \emph{\color{red}static} and
+%\emph{\color{red}dynamic} forecasts. This is essentially the same as the
+%difference between one-step and multi-step forecasts:
+%\textquotedblleft static\textquotedblright\ uses
+%information up to time $t-1$ to forecast $y_{t}$, for any $t>T_{1}$; this
+%is only possible for in-sample forecasting. \textquotedblleft Dynamic\textquotedblright uses
+%only the information up to $T$ (or $T_{1}$) to forecast $T+s$ (or $T_{1}+s$%
+%).
+%
+%\end{itemize}
+%\end{frame}
+%\begin{frame}[fragile]
+%\frametitle{Forecast Evaluation}
+%\begin{itemize}
+%\item Forecast accuracy is measured by \emph{%
+%\color{red}mean square error} (MSE) or \emph{\color{red}mean absolute error}
+%(MAE): define the prediction error $e_t\equiv y_{t}-\hat{y}_{t}$. Then\footnote{The notation here differs slightly from Brooks.}
+%\begin{equation*}
+%MSE=\frac{1}{T-T_{1}}\sum_{t=T_{1}+1}^{T}e_t^{2},\quad MAE=%
+%\frac{1}{T-T_{1}}\sum_{t=T_{1}+1}^{T}\left\vert e_t\right\vert
+%.
+%\end{equation*}%
+%\item Forecasts from two competing models with associated prediction errors $e_{1,t}$ and $e_{2,t}$ can be compared by regressing $e_{1,t}^2- e_{2,t}^2$ on a constant. Under the null of equal predictive ability, its $t$ statistic (using HAC standard errors) has an asymptotic standard normal distribution. This is known as \emph{\color{red}Diebold-Mariano test}.
+%\item Brooks discusses several other criteria.
+%\end{itemize}
+%\end{frame}
+
+\section{Epilogue}\subsection*{bla}
+\begin{frame}\frametitle{Learning Goals}
+Students are able to
+\begin{itemize}
+\item understand the essential characteristics of AR, MA, and ARMA processes;
+\item identify the correct model type from the correlogram;
+\item apply diagnostic tests to evaluate a fitted model;
+\item choose between competing models using information criteria, and
+\item use the final model for forecasting.
+\end{itemize}
+\end{frame}
+
+\frameit{Homework}{
+\item Exercise 3
+\item Questions 3, 6--9, 10a, 11a, 11e, 12 from Chapter 6 of Brooks (2019)
+}
+\end{document} 
