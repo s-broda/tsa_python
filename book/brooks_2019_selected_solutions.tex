@@ -39,12 +39,12 @@ with $k$, and seemingly linearly. For an MA(1), the ACF drops to zero after the 
 exploiting this would drive the price up to the point where the price change would be unpredictable again. Hence in practice only very little (or no)
 predictability should be expected.
 \end{enumerate}
-\item[6.6] We end up with the following values for
+\item[6.6] Note that Brooks uses a slightly different formula for the criteria: he deletes the $1+2\log\pi$ term, and doesn't count the variance as a parameter, i.e., he uses $k=p+q+1$ instead of the correct $k=p+q+2$. Using his definition, we end up with the following values for
 each criterion and for each model order, with an asterisk denoting the smallest
 value of the information criterion in each case. SBIC stands for Schwarz Bayesian Criterion, also known as SIC or BIC.
 \begin{center}
 \begin{tabular}{ccclll}
-ARMA order $(p,q)$ & $k=p+q-1$ & $\log \hat \sigma^2$ & AIC & SBIC \\
+ARMA order $(p,q)$ & $k=p+q+1$ & $\log \hat \sigma^2$ & AIC & SBIC \\
  $(0,0)$ & $1$ & $0.932$ & $0.942$ & $0.944$ \\
  $(1,0)$ & $2$ & $0.864$ & $0.884$ & $0.887$ \\
  $(0,1)$ & $2$ & $0.902$ & $0.922$ & $0.925$ \\
@@ -113,7 +113,7 @@ $$
 \right) = 19.408
 $$
 Under $H_0$ (no autocorrelation) $Q^* \sim \chi^2_3$. the $5\%$ critical
-value is (Table 3 in reader) $7.815$. The observed value exceeds the critical
+value is $7.815$. The observed value exceeds the critical
 value, so we reject the null hypothesis of no serial correlation.
 \end{itemize}
 \item[6.10]
@@ -167,39 +167,39 @@ bigger than it would have been if the crash observations were not included.
 This point needs to be considered whenever forecasting models are evaluated.
 An idea of whether this is a problem in a given situation can be gained by
 plotting the forecast errors over time.
-\item[(c)] This question is much simpler to answer than it looks! In fact, the
- inclusion of the smoothing coefficient is a ``red herring'' - i.e. a piece of
-misleading and useless information. The correct approach is to say that if we
-believe that the exponential smoothing model is appropriate, then all useful
-information will have already been used in the calculation of the current
-smoothed value (which will of course have used the smoothing coefficient in
-its calculation). Thus the three forecasts are all $0.0305$.
-
-More formally, note that the exponential smoothing forecast applies in the case of
-an ARIMA($0$,$1$,$1$) model. Thus
-$$
- f_{t-1,1} = E(y_t| \Omega_{t-1}) = S_{t-1} = 0.0305.
-$$
-The two-step ahead forecast is
-$$
- f_{t-1,2} = E(y_{t+1}|\Omega_{t-1}) = E(S_t|\Omega_{t-1}) = \alpha E(y_t|\Omega_{t-1}) + (1-\alpha) S_{t-1} = S_{t-1}.
-$$
-The 2-step-ahead forecast is the same as the one-step ahead forecast.
-In a similar way it can be  shown that $f_{t-1,k} = f_{t-1,k-1}$
-for $k=3,4,\ldots$.
-\item[(d)] The solution is to work out the mean squared error for the exponential smoothing model. The calculation is
-$$
-\begin{array}{rcl}
-MSE & = &
-\frac{1}{3} \left((0.0305 - -0.032)^2 + (0.0305 - 0.961)^2 + (0.0305 - 0.203)^2 \right) \\
-& = & (0.0039 + 0.8658 + 0.0298) = 0.2998.
-\end{array}
-$$
-Therefore, we conclude that since the mean squared error is smaller for the
-exponential smoothing model than the Box Jenkins model, the former produces
-the more accurate forecasts. We should, however, bear in mind that the
-question of accuracy was determined using only 3 forecasts, which would be
-insufficient in a real application.
+%\item[(c)] This question is much simpler to answer than it looks! In fact, the
+% inclusion of the smoothing coefficient is a ``red herring'' - i.e. a piece of
+%misleading and useless information. The correct approach is to say that if we
+%believe that the exponential smoothing model is appropriate, then all useful
+%information will have already been used in the calculation of the current
+%smoothed value (which will of course have used the smoothing coefficient in
+%its calculation). Thus the three forecasts are all $0.0305$.
+%
+%More formally, note that the exponential smoothing forecast applies in the case of
+%an ARIMA($0$,$1$,$1$) model. Thus
+%$$
+% f_{t-1,1} = E(y_t| \Omega_{t-1}) = S_{t-1} = 0.0305.
+%$$
+%The two-step ahead forecast is
+%$$
+% f_{t-1,2} = E(y_{t+1}|\Omega_{t-1}) = E(S_t|\Omega_{t-1}) = \alpha E(y_t|\Omega_{t-1}) + (1-\alpha) S_{t-1} = S_{t-1}.
+%$$
+%The 2-step-ahead forecast is the same as the one-step ahead forecast.
+%In a similar way it can be  shown that $f_{t-1,k} = f_{t-1,k-1}$
+%for $k=3,4,\ldots$.
+%\item[(d)] The solution is to work out the mean squared error for the exponential smoothing model. The calculation is
+%$$
+%\begin{array}{rcl}
+%MSE & = &
+%\frac{1}{3} \left((0.0305 - -0.032)^2 + (0.0305 - 0.961)^2 + (0.0305 - 0.203)^2 \right) \\
+%& = & (0.0039 + 0.8658 + 0.0298) = 0.2998.
+%\end{array}
+%$$
+%Therefore, we conclude that since the mean squared error is smaller for the
+%exponential smoothing model than the Box Jenkins model, the former produces
+%the more accurate forecasts. We should, however, bear in mind that the
+%question of accuracy was determined using only 3 forecasts, which would be
+%insufficient in a real application.
 \end{itemize}
 \item[6.11]
 \begin{itemize}
@@ -211,28 +211,27 @@ Process & acf & pacf\\
 \hline
 White noise & No significant coefficients & No significant
 coefficients \\
-AR($2$) & Geometrically declining or damped & First 2 pacf coefficients
+AR($2$) & Geometrically declining& First 2 pacf coefficients
 significant, \\
- & sinusoid & others insignificant \\
+ & & others insignificant \\
 MA($1$) & First acf coefficient
-significant, all & Geometrically declining or\\
- & others insignificant & damped sinusoid \\
-ARMA($2$,$1$) & Geometrically declining or damped & Geometrically
-declining or damped\\
- & sinusoid & sinusoid\\
+significant, all & Geometrically declining\\
+ & others insignificant &\\
+ARMA($2$,$1$) & Geometrically declining& Geometrically
+declining\\
 \hline
 \end{tabular}
-A couple of further points are
-worth noting. First, it is not possible to tell what the signs of the
-coefficients for the acf or pacf would be for the last three processes, since
-that would depend on the signs of the coefficients of the processes. Second,
-for mixed processes, the AR part dominates from the point of view of acf
-calculation, while the MA part dominates for pacf calculation.
-\item[(b)]
-The important point here is to focus on the MA part of the model and to
-ignore the AR dynamics. The characteristic equation would be ($1+0.42z = 0$) The
-root of this equation is $-1/0.42 = -2.38$, which lies outside the unit circle,
-and therefore the MA part of the model is invertible.
+%A couple of further points are
+%worth noting. First, it is not possible to tell what the signs of the
+%coefficients for the acf or pacf would be for the last three processes, since
+%that would depend on the signs of the coefficients of the processes. Second,
+%for mixed processes, the AR part dominates from the point of view of acf
+%calculation, while the MA part dominates for pacf calculation.
+%\item[(b)]
+%The important point here is to focus on the MA part of the model and to
+%ignore the AR dynamics. The characteristic equation would be ($1+0.42z = 0$) The
+%root of this equation is $-1/0.42 = -2.38$, which lies outside the unit circle,
+%and therefore the MA part of the model is invertible.
 \item[(c)]
 Since no values for
  the series $y$ or the lagged residuals are given, the answers should be stated
@@ -348,6 +347,8 @@ and
 $$
 Q^* = T(T+2) \sum_{k=1}^m \frac{\hat \tau_k^2}{T-k}.
 $$
+Note that we have only discussed the latter in class, and called it $Q$.
+
 In this instance, the statistics would be calculated respectively as
 $$
 Q = 500 × \left[0.307^2 + 0.013^2 + 0.086^2 + 0.0312^2 + 0.197^2\right] = 70.79
@@ -376,6 +377,23 @@ real data, the data generating process was almost certainly not any of the
 models in the ARMA family. So all we are trying to do is to find a model that
 best describes the features of the data to hand. As one econometrician put it,
 all models are wrong, but some are useful!
+\item[(d)]
+Strategy: replace future unknown values of $u_t$ with 0, and future values of $y_t$ with earlier forecasts. 
+Hence, for Model A:
+\begin{align*}
+\hat{x}_{z+1} &= 0.38 + 0.1 u_z = 0.38 + 0.1 \cdot(-0.02) = 0.378\\
+\hat{x}_{z+2} &= 0.38 + 0.1 \hat u_{z+1} = 0.38 + 0.1 \cdot 0 = 0.38\\
+\hat{x}_{z+3} &= 0.38 + 0.1 \hat u_{z+2} = 0.38 + 0.1 \cdot 0 = 0.38\\
+\hat{x}_{z+4} &= 0.38 + 0.1 \hat u_{z+3} = 0.38 + 0.1 \cdot 0 = 0.38\\
+\end{align*}
+For Model B, we find
+\begin{align*}
+\hat{x}_{z+1} &= 0.63 + 0.17 x_{z} -0.09 x_{z-1} =  0.63 + 0.17 \cdot 0.31 -0.09 \cdot 0.02 = 0.6809\\
+\hat{x}_{z+2} &= 0.63 + 0.17 \hat x_{z+1} -0.09 x_{z} = 0.63 + 0.17 \cdot  0.6809 -0.09 \cdot 0.31 = 0.7179\\
+\hat{x}_{z+3} &= 0.63 + 0.17 \hat x_{z+2} -0.09 \hat x_{z+1} = 0.63 + 0.17 \cdot 0.7179 -0.09 \cdot 0.6809 = 0.6908\\
+\hat{x}_{z+4} &= 0.63 + 0.17 \hat x_{z+3} -0.09 \hat x_{z+2} = 0.63 + 0.17 \cdot 0.6908 -0.09 \cdot 0.7179 = 0.6828.
+\end{align*}
+
 \item[(e)] %The methods are overfitting and residual diagnostics. Overfitting
 %involves selecting a deliberately larger model than the proposed one, and
 %examining the statistical significances of the additional parameters. If the
@@ -388,10 +406,26 @@ We have only discussed one method: residual diagnostics. This would involve exam
 and pacf of the residuals from the estimated model. If the residuals showed
 any ``action'', that is, if any of the acf or pacf coefficients showed
 statistical significance, this would suggest that the original model was
-inadequate. It is worth noting that these two model evaluation
-procedures would only indicate a model that was too small. If the model were
+inadequate. It is worth noting that this model evaluation
+procedure would only indicate a model that was too small. If the model were
 too large, i.e. it had superfluous terms, these procedures would deem the
-model adequate.
+model adequate. This could be solved by testing the model parameters for significance, and removing insignificant ones,
+provided the residual correlogram still looks OK after doing that. In principle, this can lead to so-called subset ARMA models, where
+some individual lag orders are removed. This is not supported in \texttt{statsmodels}, however.
+\item[(f)]
+We compute the MSE for both models. For Model A, we find
+\begin{align*}
+MSE &= \frac{1}{4}\sum_{i=1}^4 (x_{z+i}-\hat x_{z+i})^2\\
+&=\frac{1}{4}\Big[ (0.62 - 0.378)^2 + (0.19 - 0.38)^2 \\&\qquad+ (-0.32 - 0.38)^2 + (0.72 - 0.38)^2\Big] = 0.175.
+\end{align*}
+
+For Model B, 
+\begin{align*}
+MSE &= \frac{1}{4}\sum_{i=1}^4 (x_{z+i}-\hat x_{z+i})^2\\
+&=\frac{1}{4}\Big[ (0.62 -  0.6809)^2 + (0.19 - 0.7179)^2\\&\qquad + (-0.32 - 0.6908)^2 + (0.72 - 0.6828)^2\Big] = 0.326.
+\end{align*}
+So Model A performs better with respect to MSE. Note that for this contrived example, the forecasts differ quite a lot. In practice, if you have two competing models
+that both pass the residual diagnostics, they will tend to produce similar forecasts.
 \end{itemize}
 \end{itemize}
 \newpage
@@ -432,14 +466,13 @@ larger than the nominal rejrection rate ($\alpha=0.05$ in this case)
 under the null hypothesis).
 \item[(c)] A solution to serial dependence in the residuals is to perform an
 augmented Dickey Fuller test (including lagged values $\Delta y_{t-k}$ in
-the regression, $k=1, \ldots, p$). The order $p$ can be selected automatically
-in EViews.
+the regression, $k=1, \ldots, p$). The order $p$ can be selected automatically by minimizing some information criterion.
 \end{enumerate}
-\item[8.6]
-\begin{enumerate}
-\item[(a)] These findings imply i) $r=0$, (ii) $r=1$, (iii) $r=2$, (iv) $r=3$ cointegrating relationships. $r=0$ corresponds to a nonstationary model, so one should estimate a VAR in first differences. $r=1$ and $r=2$ correspond to cointegration, so one should estimate an ECM. $r=3$ corresponds to a stationary model, so one should estimate a VAR in levels.
-\item[(b)] We start from the first row. $H^0_0:r=0$ is rejected in favor of $H^0_{a}:r>0$ (the test statistic is larger than the critical value). Move on to row 2. Again, $H^1_0:r\leq 1$ is rejected in favor of $H^1_{a}:r>1$. Move on to row 3. This time, $H^2_0:r\leq 2$ is not rejected (the test statistic is smaller than the critical value). So we conclude that there are 2 cointegrating vectors.
-\end{enumerate}
+%\item[8.6]
+%\begin{enumerate}
+%\item[(a)] These findings imply i) $r=0$, (ii) $r=1$, (iii) $r=2$, (iv) $r=3$ cointegrating relationships. $r=0$ corresponds to a nonstationary model, so one should estimate a VAR in first differences. $r=1$ and $r=2$ correspond to cointegration, so one should estimate an ECM. $r=3$ corresponds to a stationary model, so one should estimate a VAR in levels.
+%\item[(b)] We start from the first row. $H^0_0:r=0$ is rejected in favor of $H^0_{a}:r>0$ (the test statistic is larger than the critical value). Move on to row 2. Again, $H^1_0:r\leq 1$ is rejected in favor of $H^1_{a}:r>1$. Move on to row 3. This time, $H^2_0:r\leq 2$ is not rejected (the test statistic is smaller than the critical value). So we conclude that there are 2 cointegrating vectors.
+%\end{enumerate}
 
 \end{itemize}
 \newpage
@@ -459,8 +492,8 @@ in EViews.
     \text{var}_{T}(y_{T+k})&=\sigma
 ^{2}+(\alpha_1 +\beta )^{k-1}(\sigma _{T+1}^{2}-\sigma ^{2}),\quad k\geq 2\label{fore}
 \end{align}
-as given in the slides, and where we have put $T$ in place of $t$. Plugging in the estimates $\sigma _{T+1}^{2}$, $\hat{\alpha}_1$, $\hat{\beta}$, and $\hat{\sigma}=\sqrt{\hat{\alpha}_0/(1-\hat{\alpha}_1-\hat{\beta})}$, this can be used to forecast the conditional variance (and hence the volatility) $k$ days ahead.
-\item  The forecast equation in the previous question is valid only if the model is stationary. Here, we have $\hat{\alpha_1}+\hat{\beta}=1.1051>1$, so this model is nonstationary. A simple derivation similar to the one given in the slides shows that
+where we have put $T$ in place of $t$. Plugging in the estimates $\sigma _{T+1}^{2}$, $\hat{\alpha}_1$, $\hat{\beta}$, and $\hat{\sigma}=\sqrt{\hat{\alpha}_0/(1-\hat{\alpha}_1-\hat{\beta})}$, this can be used to forecast the conditional variance (and hence the volatility) $k$ days ahead.
+\item  The forecast equation in the previous question is valid only if the model is stationary. Here, we have $\hat{\alpha_1}+\hat{\beta}=1.1051>1$, so this model is nonstationary. A similar derivation shows that
   \[\text{var}_{T}(y_{T+k})=\alpha_0\sum_{j=1}^{k-1}(\alpha_1+\beta)^{j-1}+(\alpha_1 +\beta )^{k-1}\sigma _{T+1}^{2}, \quad k\geq 2.
 \]
 If $(\alpha_1 +\beta )$, the volatility forecast will explode exponentially.
@@ -495,7 +528,7 @@ OLS:
 \ddot y_{it}=\sum_{j=1}^l\ddot{x}_{j,it}\beta_j+\ddot
 \nu_{it}.
 \]
-It can be shown that this is equivalent to including a dummy for each individual. The benefit is that it removes the hassle of having to estimate an extra $N$ parameters. For constructing tests and confidence intervals, we must only take care to use the proper degrees of freedom (because we implicitly still estimate the fixed effects). Eviews does that automatically. If the models includes time fixed effects as well, then the within transformation becomes
+It can be shown that this is equivalent to including a dummy for each individual. The benefit is that it removes the hassle of having to estimate an extra $N$ parameters. For constructing tests and confidence intervals, we must only take care to use the proper degrees of freedom (because we implicitly still estimate the fixed effects); software implementations usually do that automatically. If the models includes time fixed effects as well, then the within transformation becomes
 \[
 \ddot y_{it}=y_{it}-\bar y_{i\cdot}-\bar y_{\cdot t}, \quad \ddot
 x_{j,it}=x_{j,it}-\bar x_{j,i\cdot}-\bar x_{j,\cdot t},
