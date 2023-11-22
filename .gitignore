@@ -319,5 +319,5 @@ exam_information*.*
 *.djs
 *.sol
 *.qsl
-mock_exam/mock_exam.pdf
-mock_exam/mock_exam_solution.pdf
+mock_exam/mock_exam_no_cover.pdf
+mock_exam/mock_exam_solution_no_cover.pdf
