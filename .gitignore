@@ -321,3 +321,4 @@ exam_information*.*
 *.qsl
 mock_exam/mock_exam_no_cover.pdf
 mock_exam/mock_exam_solution_no_cover.pdf
+assignments/submissions*
