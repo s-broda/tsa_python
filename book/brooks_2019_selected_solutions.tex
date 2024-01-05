@@ -39,7 +39,7 @@ with $k$, and seemingly linearly. For an MA(1), the ACF drops to zero after the 
 exploiting this would drive the price up to the point where the price change would be unpredictable again. Hence in practice only very little (or no)
 predictability should be expected.
 \end{enumerate}
-\item[6.6] Note that Brooks uses a slightly different formula for the criteria: he deletes the $1+2\log\pi$ term, and doesn't count the variance as a parameter, i.e., he uses $k=p+q+1$ instead of the correct $k=p+q+2$. Using his definition, we end up with the following values for
+\item[6.6] Note that Brooks uses a slightly different formula for the criteria: he deletes the $1+\log(2\pi)$ term, and doesn't count the variance as a parameter, i.e., he uses $k=p+q+1$ instead of the correct $k=p+q+2$. Using his definition, we end up with the following values for
 each criterion and for each model order, with an asterisk denoting the smallest
 value of the information criterion in each case. SBIC stands for Schwarz Bayesian Criterion, also known as SIC or BIC.
 \begin{center}
@@ -378,7 +378,7 @@ models in the ARMA family. So all we are trying to do is to find a model that
 best describes the features of the data to hand. As one econometrician put it,
 all models are wrong, but some are useful!
 \item[(d)]
-Strategy: replace future unknown values of $u_t$ with 0, and future values of $y_t$ with earlier forecasts. 
+Strategy: replace future unknown values of $u_t$ with 0, and future values of $y_t$ with earlier forecasts.
 Hence, for Model A:
 \begin{align*}
 \hat{x}_{z+1} &= 0.38 + 0.1 u_z = 0.38 + 0.1 \cdot(-0.02) = 0.378\\
@@ -419,7 +419,7 @@ MSE &= \frac{1}{4}\sum_{i=1}^4 (x_{z+i}-\hat x_{z+i})^2\\
 &=\frac{1}{4}\Big[ (0.62 - 0.378)^2 + (0.19 - 0.38)^2 \\&\qquad+ (-0.32 - 0.38)^2 + (0.72 - 0.38)^2\Big] = 0.175.
 \end{align*}
 
-For Model B, 
+For Model B,
 \begin{align*}
 MSE &= \frac{1}{4}\sum_{i=1}^4 (x_{z+i}-\hat x_{z+i})^2\\
 &=\frac{1}{4}\Big[ (0.62 -  0.6809)^2 + (0.19 - 0.7179)^2\\&\qquad + (-0.32 - 0.6908)^2 + (0.72 - 0.6828)^2\Big] = 0.326.
