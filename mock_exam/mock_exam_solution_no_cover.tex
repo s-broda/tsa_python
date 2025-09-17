@@ -3,8 +3,9 @@
 \usepackage{graphicx, float, booktabs}
 \usepackage[UTF8]{inputenc}
 \usepackage{fancyhdr, pdfpages, lastpage}
+\usepackage{tagpdf-base}
 \usepackage[coverpage,
-%online,
+online,
 forcolorpaper, pointsonright, nototals, noparttotals,
 %nosolutions,%
 answerkey,%
@@ -65,22 +66,21 @@ The PACF becomes insignificant after 2 lags, whereas the ACF decays exponentiall
 \end{solution}
 \end{problem}
 \begin{problem}[6]
-The 11th sample autocorrelation (not shown in the graph) is $\hat{\tau}_{11} =-0.045$. Test if $\hat{\tau}_{11}$ is significantly different from zero.
+The 31st sample autocorrelation (not shown in the graph) is $\hat{\tau}_{31} =-0.045$. Test if $\hat{\tau}_{31}$ is significantly different from zero.
 \begin{solution}[10cm]
 
 \begin{itemize}
-\item The hypotheses are $H_0: \tau_{11} = 0$ vs.\ $H_a: \tau_{11}\neq 0$.
-\item The test statistic is $\hat{\tau}_{11}$.
+\item The hypotheses are $H_0: \tau_{31} = 0$ vs.\ $H_a: \tau_{31}\neq 0$.
+\item The test statistic is $\hat{\tau}_{31}$.
 \item Its distribution is $\mathrm{N}(0, 1/T)$ under $H_0$.
 \item The critical value is thus $1.96/\sqrt{1000} = 0.062$.
-\item The observed test statistic is $\hat{\tau}_{11} =-0.045$.
+\item The observed test statistic is $\hat{\tau}_{31} =-0.045$.
 \item Since $|-0.045| < 0.062$, we do not reject $H_0$.
-\item Conclusion: $\tau_{11}$ is not significantly different from zero.
+\item Conclusion: $\tau_{31}$ is not significantly different from zero.
 \end{itemize}
 \end{solution}
-
-
 \end{problem}
+
 \begin{problem}[6]
 The output in Figure \ref{fig:adf} on Page \pageref{fig:adf} shows the results of regressing $\Delta y_t$ (\texttt{y}) on $y_{t-1}$ (\texttt{x1}) and $\Delta y_{t-1}$ (\texttt{x2}). Use it to test if the data are integrated.
 \begin{solution}[10cm]
@@ -101,7 +101,7 @@ I have estimated a particular ARMA model. The estimation output is shown in Figu
 \begin{solution}[10cm]
 The estimated AR(2) model is
 \[
-y_t =0.2158\cdot (1-0.5236-0.3595) +  0.5236\cdot  y_{t-1} + 0.3595 \cdot y_{t-2}.
+Y_t =0.2158\cdot (1-0.5236-0.3595) +  0.5236\cdot  Y_{t-1} + 0.3595 \cdot Y_{t-2}+U_t.
 \]
 Note \texttt{archmodel}'s peculiar interpretation of the intercept, \texttt{const}: in our notation, it corresponds to $\hat{\alpha}/ (1-\hat{\phi}_1-\hat{\phi}_2)$, so that $\hat{\alpha} = \mathtt{const}\cdot (1-\hat{\phi}_1 - \hat{\phi_2})$. See the exercises.
 \end{solution}
